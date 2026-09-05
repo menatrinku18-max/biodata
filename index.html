@@ -43,12 +43,12 @@
             opacity: 0.9;
         }
         .section {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         .section-title {
             font-size: 20px;
             color: #007bff;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             border-left: 4px solid #007bff;
             padding-left: 10px;
         }
@@ -76,15 +76,49 @@
             border-radius: 20px;
             font-size: 14px;
         }
-        .contact-btn {
-            display: inline-block;
+        
+        /* Form Styling */
+        .contact-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #495057;
+        }
+        .form-group input, 
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .submit-btn {
             background: #28a745;
             color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 6px;
-            margin-top: 10px;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
             font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover {
+            background: #218838;
         }
     </style>
 </head>
@@ -92,23 +126,26 @@
 
 <div class="container">
     
+    <!-- ૧. Welcome Banner -->
     <div class="welcome-banner">
         <h1>Welcome to My Profile</h1>
         <p>હું HTML/CSS નો ઉપયોગ કરીને વેબસાઈટ બનાવવાનું અને વેબ ડેવલપમેન્ટનું કામ કરું છું.</p>
     </div>
 
+    <!-- ૨. Personal Details -->
     <div class="section">
         <h2 class="section-title">વ્યક્તિગત માહિતી (Personal Details)</h2>
         <div class="info-grid">
             <div class="info-item"><strong>નામ:</strong> તમારું નામ અહીં લખો</div>
             <div class="info-item"><strong>મોબાઈલ:</strong> +91 XXXXXXXXXX</div>
-            <div class="info-item"><strong>ઈમેઈલ:</strong> your-email@gmail.com</div>
+            <div class="info-item"><strong>ઈમેઈલ:</strong> tamaru-email@gmail.com</div>
             <div class="info-item"><strong>સ્થળ:</strong> ગુજરાત, ભારત</div>
         </div>
     </div>
 
+    <!-- ૩. My Work -->
     <div class="section">
-        <h2 class="section-title">હું કયું કયું કામ કરી આપું છું (My Work)</h2>
+        <h2 class="section-title">હું કયું કયું કામ કરી આપું છું (My Services)</h2>
         <div class="info-grid">
             <div class="info-item">
                 <strong>HTML Website Design</strong>
@@ -121,6 +158,7 @@
         </div>
     </div>
 
+    <!-- ૪. Skills -->
     <div class="section">
         <h2 class="section-title">આવડત (Skills)</h2>
         <ul class="skills-list">
@@ -131,10 +169,35 @@
         </ul>
     </div>
 
-    <div class="section" style="text-align: center;">
-        <h2 class="section-title">સંપર્ક કરો (Contact Me)</h2>
-        <p>કામ માટે મારો ઈમેઈલ પર સંપર્ક કરો:</p>
-        <a href="mailto:your-email@gmail.com" class="contact-btn">ઈમેઈલ મોકલો</a>
+    <!-- ૫. Contact Form Section (આમાં ફોર્મ ભરીને ઈમેઈલ થશે) -->
+    <div class="section">
+        <h2 class="section-title">સંપર્ક કરો (Contact Form)</h2>
+        <p style="margin-bottom: 15px;">જો તમારે મારી પાસે કામ કરાવવું હોય તો નીચેનું ફોર્મ ભરો:</p>
+
+        <!-- Formspree Endpoint Link -->
+        <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" class="contact-form">
+            <div class="form-group">
+                <label for="name">તમારું નામ (Name):</label>
+                <input type="text" id="name" name="name" placeholder="તમારું નામ લખો" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">તમારું ઈમેઈલ (Email):</label>
+                <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">મોબાઈલ નંબર (Mobile No):</label>
+                <input type="tel" id="phone" name="phone" placeholder="+91 9876543210">
+            </div>
+
+            <div class="form-group">
+                <label for="message">કામ અંગેનો મેસેજ (Message):</label>
+                <textarea id="message" name="message" placeholder="તમારે કયું કામ કરાવવું છે તેની વિગત લખો..." required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">સબમિટ કરો / ઈમેઈલ મોકલો</button>
+        </form>
     </div>
 
 </div>
