@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maru Biodata / Portfolio</title>
+    <title>Welcome to My Profile</title>
     <style>
         * {
             box-sizing: border-box;
@@ -25,20 +25,22 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .header {
+        /* Welcome Banner Section */
+        .welcome-banner {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
             text-align: center;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 20px;
-            margin-bottom: 25px;
+            padding: 40px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
         }
-        .header h1 {
-            color: #007bff;
+        .welcome-banner h1 {
             font-size: 32px;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
-        .header p {
+        .welcome-banner p {
             font-size: 18px;
-            color: #555;
+            opacity: 0.9;
         }
         .section {
             margin-bottom: 25px;
@@ -57,12 +59,9 @@
         }
         .info-item {
             background: #f8f9fa;
-            padding: 12px 15px;
+            padding: 15px;
             border-radius: 6px;
             border: 1px solid #e9ecef;
-        }
-        .info-item strong {
-            color: #495057;
         }
         ul.skills-list {
             list-style-type: none;
@@ -87,32 +86,41 @@
             margin-top: 10px;
             font-weight: bold;
         }
-        .contact-btn:hover {
-            background: #218838;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Header / Name Section -->
-    <div class="header">
-        <h1>તમારું નામ અહીં લખો</h1>
-        <p>Freelance Web Developer & Data Entry Specialist</p>
+    
+    <div class="welcome-banner">
+        <h1>Welcome to My Profile</h1>
+        <p>હું HTML/CSS નો ઉપયોગ કરીને વેબસાઈટ બનાવવાનું અને વેબ ડેવલપમેન્ટનું કામ કરું છું.</p>
     </div>
 
-    <!-- Personal Information -->
     <div class="section">
         <h2 class="section-title">વ્યક્તિગત માહિતી (Personal Details)</h2>
         <div class="info-grid">
+            <div class="info-item"><strong>નામ:</strong> તમારું નામ અહીં લખો</div>
             <div class="info-item"><strong>મોબાઈલ:</strong> +91 XXXXXXXXXX</div>
             <div class="info-item"><strong>ઈમેઈલ:</strong> your-email@gmail.com</div>
-            <div class="info-item"><strong>ભાષા:</strong> ગુજરાતી, હિન્દી, અંગ્રેજી</div>
             <div class="info-item"><strong>સ્થળ:</strong> ગુજરાત, ભારત</div>
         </div>
     </div>
 
-    <!-- Skills Section -->
+    <div class="section">
+        <h2 class="section-title">હું કયું કયું કામ કરી આપું છું (My Work)</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <strong>HTML Website Design</strong>
+                <p>HTML5 અને CSS3 ની મદદથી સુંદર અને ક્લીન વેબસાઈટ પેજ ડિઝાઈન કરવું.</p>
+            </div>
+            <div class="info-item">
+                <strong>Responsive Web Pages</strong>
+                <p>મોબાઈલ અને લેપટોપ બંનેમાં સરસ દેખાય તેવી વેબસાઈટ બનાવવી.</p>
+            </div>
+        </div>
+    </div>
+
     <div class="section">
         <h2 class="section-title">આવડત (Skills)</h2>
         <ul class="skills-list">
@@ -120,41 +128,15 @@
             <li>CSS3</li>
             <li>Python (Basic)</li>
             <li>Data Entry</li>
-            <li>Content Writing</li>
-            <li>MS Office / Excel</li>
         </ul>
     </div>
 
-    <!-- Education Section -->
-    <div class="section">
-        <h2 class="section-title">અભ્યાસ (Education)</h2>
-        <div class="info-item">
-            <strong>તમારો અભ્યાસ / ડિગ્રી</strong><br>
-            શાળા/કોલેજનું નામ | વર્ષ
-        </div>
-    </div>
-
-    <!-- Services Offered -->
-    <div class="section">
-        <h2 class="section-title">હું કઈ સેવાઓ આપું છું (Services)</h2>
-        <div class="info-grid">
-            <div class="info-item">
-                <strong>Web Development</strong>
-                <p>HTML/CSS ની મદદથી સુંદર અને રેસ્પોન્સિવ વેબસાઈટ બનાવવી.</p>
-            </div>
-            <div class="info-item">
-                <strong>Data Entry</strong>
-                <p>ચોકસાઈ સાથે Excel અને Online Data Entry નું કામ કરવું.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Contact Button -->
     <div class="section" style="text-align: center;">
         <h2 class="section-title">સંપર્ક કરો (Contact Me)</h2>
-        <p>કામ માટે મારો સીધો સંપર્ક કરો:</p>
+        <p>કામ માટે મારો ઈમેઈલ પર સંપર્ક કરો:</p>
         <a href="mailto:your-email@gmail.com" class="contact-btn">ઈમેઈલ મોકલો</a>
     </div>
+
 </div>
 
 </body>
