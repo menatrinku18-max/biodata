@@ -169,13 +169,16 @@
         </ul>
     </div>
 
-    <!-- ૫. Contact Form Section (આમાં ફોર્મ ભરીને ઈમેઈલ થશે) -->
+    <!-- ૫. Contact Form (તમારા ઈમેઈલ પર મેસેજ મોકલવા માટે) -->
     <div class="section">
         <h2 class="section-title">સંપર્ક કરો (Contact Form)</h2>
         <p style="margin-bottom: 15px;">જો તમારે મારી પાસે કામ કરાવવું હોય તો નીચેનું ફોર્મ ભરો:</p>
 
-        <!-- Formspree Endpoint Link -->
-        <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" class="contact-form">
+        <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+            
+            <!-- અહીં YOUR_ACCESS_KEY ની જગ્યાએ તમારો કી કોડ મૂકવો -->
+            <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
+
             <div class="form-group">
                 <label for="name">તમારું નામ (Name):</label>
                 <input type="text" id="name" name="name" placeholder="તમારું નામ લખો" required>
