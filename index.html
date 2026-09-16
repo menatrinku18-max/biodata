@@ -61,7 +61,7 @@
             color: #cbd5e1;
             margin-bottom: 8px;
         }
-        textarea, select, input[type="file"] {
+        textarea, select {
             width: 100%;
             padding: 12px 14px;
             background: #0f172a;
@@ -70,10 +70,8 @@
             color: #fff;
             font-size: 0.9rem;
             outline: none;
-            transition: border-color 0.3s;
-        }
-        textarea {
             resize: none;
+            transition: border-color 0.3s;
         }
         textarea:focus, select:focus {
             border-color: #6366f1;
@@ -85,6 +83,7 @@
             text-align: center;
             background: #0f172a;
             cursor: pointer;
+            display: block;
         }
         .file-upload-box input {
             display: none;
@@ -141,7 +140,7 @@
             overflow: hidden;
             position: relative;
         }
-        .video-preview video {
+        .video-preview video, .video-preview img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -159,6 +158,7 @@
         .placeholder-text {
             color: #64748b;
             font-size: 0.85rem;
+            padding: 10px;
         }
         .footer-credits {
             font-size: 0.75rem;
@@ -180,7 +180,7 @@
             <!-- Prompt Input -->
             <div class="form-group">
                 <label for="prompt"><i class="fa-solid fa-pen-nib"></i> Enter Video Prompt & Story</label>
-                <textarea id="prompt" rows="3" placeholder="e.g., Horror mystery story part 6 with spooky background voice..."></textarea>
+                <textarea id="prompt" rows="3" placeholder="e.g., Horror mystery story part 6..."></textarea>
             </div>
 
             <!-- Image Upload Option -->
@@ -232,10 +232,14 @@
     </div>
 
     <script>
+        let uploadedImageUrl = null;
+
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (file) {
                 document.getElementById('fileName').innerText = "Selected: " + file.name;
+                // Create local URL for previewing the uploaded image instantly
+                uploadedImageUrl = URL.createObjectURL(file);
             }
         }
 
@@ -259,12 +263,12 @@
             btn.disabled = true;
             loader.style.display = 'flex';
             resultSection.style.display = 'block';
-            videoPreview.innerHTML = '<span class="placeholder-text">Rendering AI frames...</span>';
+            videoPreview.innerHTML = '<span class="placeholder-text">Rendering AI animation frames...</span>';
             audioStatus.style.display = 'none';
 
             // Realistic loading steps simulation
             setTimeout(() => {
-                loadingText.innerText = "Adding matching voiceover & sound effects...";
+                loadingText.innerText = "Syncing background voice and sound effects...";
             }, 1500);
 
             setTimeout(() => {
@@ -273,7 +277,7 @@
                 
                 // Set custom voice message based on selection
                 if(voiceStyle === 'horror') {
-                    voiceMsg.innerText = "Spooky Horror voice and background chill audio added!";
+                    voiceMsg.innerText = "Spooky Horror voice and chill sound effect added!";
                 } else if(voiceStyle === 'cinematic') {
                     voiceMsg.innerText = "Deep cinematic trailer voice synced!";
                 } else if(voiceStyle === 'energetic') {
@@ -284,13 +288,24 @@
 
                 audioStatus.style.display = 'block';
 
-                // Display working responsive video preview
-                videoPreview.innerHTML = `
-                    <video autoplay loop muted playsinline>
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-code-31910-large.mp4" type="video/mp4">
-                        Your video will support playback directly.
-                    </video>
-                `;
+                // If user uploaded an image, show animated zoom effect on it, else show sample working video
+                if (uploadedImageUrl) {
+                    videoPreview.innerHTML = `
+                        <div style="width:100%; height:100%; position:relative; overflow:hidden;">
+                            <img src="${uploadedImageUrl}" style="width:100%; height:100%; object-fit:cover; animation: zoomEffect 5s infinite alternate;" alt="AI Generated Video">
+                            <div style="position:absolute; bottom:10px; left:10px; background:rgba(0,0,0,0.6); padding:4px 8px; border-radius:4px; font-size:0.75rem; color:#fff;">
+                                <i class="fa-solid fa-circle-play" style="color:#ec4899;"></i> Playing AI Animation
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    videoPreview.innerHTML = `
+                        <video autoplay loop muted playsinline controls style="width:100%; height:100%;">
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-code-31910-large.mp4" type="video/mp4">
+                            Your browser does not support video playback.
+                        </video>
+                    `;
+                }
             }, 3000);
         }
     </script>
