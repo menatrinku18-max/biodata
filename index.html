@@ -1,1 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Generator Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+        }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: #1e293b;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            overflow: hidden;
+            border: 1px solid #334155;
+            margin-bottom: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            padding: 24px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .header p {
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+        textarea, select {
+            width: 100%;
+            padding: 12px 14px;
+            background: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.9rem;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        textarea:focus, select:focus {
+            border-color: #6366f1;
+        }
+        .btn-generate {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .btn-generate:active {
+            transform: scale(0.98);
+        }
+        .btn-generate:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .result-section {
+            margin-top: 24px;
+            text-align: center;
+            display: none;
+        }
+        .loader {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #334155;
+            border-top: 4px solid #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .video-preview {
+            width: 100%;
+            height: 240px;
+            background: #0f172a;
+            border-radius: 12px;
+            border: 1px dashed #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .video-preview video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        .placeholder-text {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        .footer-credits {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
 
+    <div class="container">
+        <div class="header">
+            <h1><i class="fa-solid fa-wand-magic-sparkles"></i> AI Video Studio</h1>
+            <p>Create amazing AI videos instantly for free</p>
+        </div>
+        
+        <div class="content">
+            <div class="form-group">
+                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> Enter Video Prompt / Description</label>
+                <textarea id="prompt" rows="3" placeholder="e.g., A cinematic shot of a futuristic neon city in the rain..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="style"><i class="fa-solid fa-palette"></i> Select Style</label>
+                <select id="style">
+                    <option value="cinematic">Cinematic 4K</option>
+                    <option value="anime">Anime / Cartoon</option>
+                    <option value="3d">3D Animation</option>
+                    <option value="realistic">Hyper Realistic</option>
+                </select>
+            </div>
+
+            <button id="generateBtn" class="btn-generate" onclick="generateVideo()">
+                <i class="fa-solid fa-play"></i> Generate Video
+            </button>
+
+            <div class="loader" id="loader">
+                <div class="spinner"></div>
+                <p style="margin-top: 10px; font-size: 0.85rem; color: #94a3b8;">AI is crafting your video...</p>
+            </div>
+
+            <div class="result-section" id="resultSection">
+                <label style="text-align: left; margin-bottom: 8px; display: block;"><i class="fa-solid fa-video"></i> Generated Video Result</label>
+                <div class="video-preview" id="videoPreview">
+                    <span class="placeholder-text">Your video will appear here</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-credits">
+        Built with ❤️ for Creators | Free Edition
+    </div>
+
+    <script>
+        function generateVideo() {
+            const prompt = document.getElementById('prompt').value.trim();
+            const btn = document.getElementById('generateBtn');
+            const loader = document.getElementById('loader');
+            const resultSection = document.getElementById('resultSection');
+            const videoPreview = document.getElementById('videoPreview');
+
+            if (!prompt) {
+                alert('કૃપા કરીને પહેલા પ્રોમ્પ્ટ (Prompt) લખો!');
+                return;
+            }
+
+            // Disable button & show loader
+            btn.disabled = true;
+            loader.style.display = 'flex';
+            resultSection.style.display = 'block';
+            videoPreview.innerHTML = '<span class="placeholder-text">Processing...</span>';
+
+            // Simulating video generation process seamlessly
+            setTimeout(() => {
+                loader.style.display = 'none';
+                btn.disabled = false;
+                
+                videoPreview.innerHTML = `
+                    <video autoplay loop muted playsinline>
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-code-31910-large.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
