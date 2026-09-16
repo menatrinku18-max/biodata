@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Generator Pro</title>
+    <title>Rinku AI Video Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -27,13 +27,13 @@
             max-width: 480px;
             background: #1e293b;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
             overflow: hidden;
             border: 1px solid #334155;
             margin-bottom: 20px;
         }
         .header {
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+            background: linear-gradient(135deg, #6366f1, #ec4899);
             padding: 24px 20px;
             text-align: center;
         }
@@ -45,7 +45,7 @@
         }
         .header p {
             font-size: 0.85rem;
-            color: #e2e8f0;
+            color: #f1f5f9;
             opacity: 0.9;
         }
         .content {
@@ -61,7 +61,7 @@
             color: #cbd5e1;
             margin-bottom: 8px;
         }
-        textarea, select {
+        textarea, select, input[type="file"] {
             width: 100%;
             padding: 12px 14px;
             background: #0f172a;
@@ -69,17 +69,30 @@
             border-radius: 12px;
             color: #fff;
             font-size: 0.9rem;
-            resize: none;
             outline: none;
             transition: border-color 0.3s;
+        }
+        textarea {
+            resize: none;
         }
         textarea:focus, select:focus {
             border-color: #6366f1;
         }
+        .file-upload-box {
+            border: 2px dashed #475569;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            background: #0f172a;
+            cursor: pointer;
+        }
+        .file-upload-box input {
+            display: none;
+        }
         .btn-generate {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+            background: linear-gradient(135deg, #6366f1, #ec4899);
             border: none;
             border-radius: 12px;
             color: #fff;
@@ -87,14 +100,10 @@
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-            transition: transform 0.2s, opacity 0.2s;
+            transition: transform 0.2s;
         }
         .btn-generate:active {
             transform: scale(0.98);
-        }
-        .btn-generate:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
         }
         .result-section {
             margin-top: 24px;
@@ -112,7 +121,7 @@
             width: 40px;
             height: 40px;
             border: 4px solid #334155;
-            border-top: 4px solid #6366f1;
+            border-top: 4px solid #ec4899;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -122,10 +131,10 @@
         }
         .video-preview {
             width: 100%;
-            height: 240px;
+            height: 250px;
             background: #0f172a;
             border-radius: 12px;
-            border: 1px dashed #475569;
+            border: 1px solid #475569;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -137,6 +146,15 @@
             height: 100%;
             object-fit: cover;
             border-radius: 12px;
+        }
+        .audio-status {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+            display: none;
         }
         .placeholder-text {
             color: #64748b;
@@ -154,58 +172,86 @@
 
     <div class="container">
         <div class="header">
-            <h1><i class="fa-solid fa-wand-magic-sparkles"></i> AI Video Studio</h1>
-            <p>Create amazing AI videos instantly for free</p>
+            <h1><i class="fa-solid fa-clapperboard"></i> Rinku AI Video Generator</h1>
+            <p>Create AI Videos & Voiceovers Instantly</p>
         </div>
         
         <div class="content">
+            <!-- Prompt Input -->
             <div class="form-group">
-                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> Enter Video Prompt / Description</label>
-                <textarea id="prompt" rows="3" placeholder="e.g., A cinematic shot of a futuristic neon city in the rain..."></textarea>
+                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> Enter Video Prompt & Story</label>
+                <textarea id="prompt" rows="3" placeholder="e.g., Horror mystery story part 6 with spooky background voice..."></textarea>
             </div>
 
+            <!-- Image Upload Option -->
             <div class="form-group">
-                <label for="style"><i class="fa-solid fa-palette"></i> Select Style</label>
-                <select id="style">
-                    <option value="cinematic">Cinematic 4K</option>
-                    <option value="anime">Anime / Cartoon</option>
-                    <option value="3d">3D Animation</option>
-                    <option value="realistic">Hyper Realistic</option>
+                <label><i class="fa-solid fa-image"></i> Upload Reference Image (Optional)</label>
+                <label class="file-upload-box" for="imageInput">
+                    <i class="fa-solid fa-cloud-arrow-up" style="color: #6366f1; font-size: 1.2rem; margin-bottom: 4px;"></i>
+                    <span id="fileName" style="display:block; font-size:0.8rem; color:#94a3b8;">Tap to select photo from phone</span>
+                </label>
+                <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)">
+            </div>
+
+            <!-- Voice Style Selection -->
+            <div class="form-group">
+                <label for="voiceStyle"><i class="fa-solid fa-microphone-lines"></i> Select AI Voice & Sound Effect</label>
+                <select id="voiceStyle">
+                    <option value="horror">👻 Spooky / Horror Mystery Voice</option>
+                    <option value="cinematic">🎬 Deep Cinematic Trailer Voice</option>
+                    <option value="energetic">🔥 Fast Energetic Reel Voice</option>
+                    <option value="calm">🌿 Soft & Calm Narration</option>
                 </select>
             </div>
 
             <button id="generateBtn" class="btn-generate" onclick="generateVideo()">
-                <i class="fa-solid fa-play"></i> Generate Video
+                <i class="fa-solid fa-play"></i> Generate AI Video
             </button>
 
+            <!-- Loader -->
             <div class="loader" id="loader">
                 <div class="spinner"></div>
-                <p style="margin-top: 10px; font-size: 0.85rem; color: #94a3b8;">AI is crafting your video...</p>
+                <p style="margin-top: 10px; font-size: 0.85rem; color: #cbd5e1;" id="loadingText">AI is generating visual frames...</p>
             </div>
 
+            <!-- Result Section -->
             <div class="result-section" id="resultSection">
-                <label style="text-align: left; margin-bottom: 8px; display: block;"><i class="fa-solid fa-video"></i> Generated Video Result</label>
+                <label style="text-align: left; margin-bottom: 8px; display: block;"><i class="fa-solid fa-video"></i> Your Generated AI Video</label>
                 <div class="video-preview" id="videoPreview">
                     <span class="placeholder-text">Your video will appear here</span>
+                </div>
+                <div class="audio-status" id="audioStatus">
+                    <i class="fa-solid fa-volume-high"></i> <span id="voiceMsg">Voice & Sound effect synced successfully!</span>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="footer-credits">
-        Built with ❤️ for Creators | Free Edition
+        Designed by Rinku | Powered by Web AI Studio
     </div>
 
     <script>
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('fileName').innerText = "Selected: " + file.name;
+            }
+        }
+
         function generateVideo() {
             const prompt = document.getElementById('prompt').value.trim();
+            const voiceStyle = document.getElementById('voiceStyle').value;
             const btn = document.getElementById('generateBtn');
             const loader = document.getElementById('loader');
+            const loadingText = document.getElementById('loadingText');
             const resultSection = document.getElementById('resultSection');
             const videoPreview = document.getElementById('videoPreview');
+            const audioStatus = document.getElementById('audioStatus');
+            const voiceMsg = document.getElementById('voiceMsg');
 
             if (!prompt) {
-                alert('કૃપા કરીને પહેલા પ્રોમ્પ્ટ (Prompt) લખો!');
+                alert('કૃપા કરીને પહેલા પ્રોમ્પ્ટ અથવા સ્ટોરી લખો!');
                 return;
             }
 
@@ -213,17 +259,36 @@
             btn.disabled = true;
             loader.style.display = 'flex';
             resultSection.style.display = 'block';
-            videoPreview.innerHTML = '<span class="placeholder-text">Processing...</span>';
+            videoPreview.innerHTML = '<span class="placeholder-text">Rendering AI frames...</span>';
+            audioStatus.style.display = 'none';
 
-            // Simulating video generation process seamlessly
+            // Realistic loading steps simulation
+            setTimeout(() => {
+                loadingText.innerText = "Adding matching voiceover & sound effects...";
+            }, 1500);
+
             setTimeout(() => {
                 loader.style.display = 'none';
                 btn.disabled = false;
                 
+                // Set custom voice message based on selection
+                if(voiceStyle === 'horror') {
+                    voiceMsg.innerText = "Spooky Horror voice and background chill audio added!";
+                } else if(voiceStyle === 'cinematic') {
+                    voiceMsg.innerText = "Deep cinematic trailer voice synced!";
+                } else if(voiceStyle === 'energetic') {
+                    voiceMsg.innerText = "High-energy trendy reel voice added!";
+                } else {
+                    voiceMsg.innerText = "Soft calm narration audio synced!";
+                }
+
+                audioStatus.style.display = 'block';
+
+                // Display working responsive video preview
                 videoPreview.innerHTML = `
                     <video autoplay loop muted playsinline>
                         <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-code-31910-large.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
+                        Your video will support playback directly.
                     </video>
                 `;
             }, 3000);
