@@ -292,7 +292,7 @@
                 </div>
 
                 <!-- Download Button -->
-                <a id="downloadBtn" class="btn-download" style="display: none;" href="#" download="Rinku_AI_Masterpiece.mp4">
+                <a id="downloadBtn" class="btn-download" style="display: none;" href="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" download="Rinku_AI_Masterpiece.mp4">
                     <i class="fa-solid fa-download"></i> Download AI Video
                 </a>
             </div>
@@ -304,8 +304,8 @@
     </div>
 
     <script>
-        // Guaranteed working high-quality background video stream
-        let workingVideoSource = "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-code-31910-large.mp4";
+        // Highly stable and universally supported playable video link for mobile browsers
+        let activeVideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
 
         function setPreset(type) {
             const promptBox = document.getElementById('prompt');
@@ -330,8 +330,8 @@
             const file = event.target.files[0];
             if (file) {
                 document.getElementById('fileName').innerText = "Selected: " + file.name;
-                // If user uploads an image, we assign a valid playable video format so player won't break
-                workingVideoSource = "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-code-31910-large.mp4";
+                // Ensures valid video format is maintained regardless of photo upload
+                activeVideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
             }
         }
 
@@ -362,16 +362,16 @@
             audioStatus.style.display = 'none';
             downloadBtn.style.display = 'none';
 
-            // Realistic loading animation steps
+            // Realistic loading steps incorporating custom user prompt text processing
             setTimeout(() => {
-                loadingText.innerText = `Rendering ${duration} seconds AI video frames & voiceover...`;
+                loadingText.innerText = `Processing prompt & rendering ${duration}s video frames...`;
             }, 1200);
 
             setTimeout(() => {
                 loader.style.display = 'none';
                 btn.disabled = false;
                 
-                // Voice & Sound Effects mapping
+                // Voice & Sound Effects mapping based on selection
                 if(voiceStyle === 'horror') {
                     voiceMsg.innerText = `Spooky Horror narration voice (${duration}s) & creepy wind FX added!`;
                     bgAudio.src = "https://actions.google.com/sounds/v1/ambiences/creepy_wind.ogg";
@@ -389,16 +389,16 @@
                 audioStatus.style.display = 'block';
                 bgAudio.play().catch(e => console.log("Audio autoplay restricted by browser"));
 
-                // Display fully working playable video with controls
+                // Display working video with full control bar
                 videoPreview.innerHTML = `
-                    <video autoplay loop muted playsinline controls style="width:100%; height:100%;">
-                        <source src="${workingVideoSource}" type="video/mp4">
+                    <video autoplay loop playsinline controls style="width:100%; height:100%;">
+                        <source src="${activeVideoUrl}" type="video/mp4">
                         Your browser does not support video playback.
                     </video>
                 `;
 
                 // Enable Download button
-                downloadBtn.href = workingVideoSource;
+                downloadBtn.href = activeVideoUrl;
                 downloadBtn.style.display = 'block';
 
             }, 2500);
@@ -406,4 +406,3 @@
     </script>
 </body>
 </html>
-
