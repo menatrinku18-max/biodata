@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rinku Instant AI Video Studio</title>
+    <title>Rinku Free AI Video Studio Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -27,7 +27,7 @@
             max-width: 480px;
             background: #111827;
             border-radius: 22px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
             overflow: hidden;
             border: 1px solid #1f2937;
             margin-bottom: 20px;
@@ -38,13 +38,13 @@
             text-align: center;
         }
         .header h1 {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 700;
             color: #fff;
             margin-bottom: 4px;
         }
         .header p {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: #f1f5f9;
             opacity: 0.9;
         }
@@ -148,20 +148,25 @@
             overflow: hidden;
             position: relative;
         }
-        .video-preview img, .video-preview video {
+        .video-preview img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            animation: cinematicZoom 8s infinite alternate;
+        }
+        @keyframes cinematicZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
         }
         .script-overlay {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(3, 7, 18, 0.9);
+            background: rgba(3, 7, 18, 0.85);
             border-top: 1px solid #4f46e5;
             padding: 10px;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             color: #f8fafc;
             text-align: left;
             max-height: 80px;
@@ -207,79 +212,70 @@
 
     <div class="container">
         <div class="header">
-            <h1><i class="fa-solid fa-wand-magic-sparkles"></i> Rinku Instant AI Studio</h1>
-            <p>Upload Photo & Auto-Generate AI Video</p>
+            <h1><i class="fa-solid fa-wand-magic-sparkles"></i> Rinku AI Video Studio</h1>
+            <p>ફ્રી AI વીડિયો જનરેટર (ઇમેજ અપલોડ કરો અને વીડિયો બનાવો)</p>
         </div>
         
         <div class="content">
-            <!-- Quick Story Presets -->
-            <label><i class="fa-solid fa-bolt"></i> Quick Story Presets</label>
+            <label><i class="fa-solid fa-bolt"></i> ક્વિક સ્ટોરી શોર્ટકટ્સ</label>
             <div class="quick-presets">
-                <div class="preset-chip" onclick="setPreset('horror')">👻 Horror Mystery</div>
-                <div class="preset-chip" onclick="setPreset('love')">💖 Love Story</div>
-                <div class="preset-chip" onclick="setPreset('college')">🎓 College Life</div>
+                <div class="preset-chip" onclick="setPreset('horror')">👻 હોરર મિસ્ટ્રી</div>
+                <div class="preset-chip" onclick="setPreset('love')">💖 લવ સ્ટોરી</div>
+                <div class="preset-chip" onclick="setPreset('college')">🎓 કોલેજ લાઈફ</div>
             </div>
 
-            <!-- Prompt Input -->
             <div class="form-group">
-                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> Enter Video Prompt / Script</label>
-                <textarea id="prompt" rows="3" placeholder="Type your story or script here..."></textarea>
+                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> વીડિયો પ્રોમ્પ્ટ અથવા સ્ટોરી લખો</label>
+                <textarea id="prompt" rows="3" placeholder="તમારી સ્ટોરી અહીં ટાઈપ કરો..."></textarea>
             </div>
 
-            <!-- Video Duration Option -->
             <div class="form-group">
-                <label for="videoDuration"><i class="fa-solid fa-clock"></i> Select Video Duration</label>
+                <label for="videoDuration"><i class="fa-solid fa-clock"></i> વીડિયોનો સમય પસંદ કરો</label>
                 <select id="videoDuration">
-                    <option value="15">15 Seconds (Shorts / Reels)</option>
-                    <option value="30" selected>30 Seconds (Standard Story)</option>
-                    <option value="60">60 Seconds (Full Cinematic)</option>
+                    <option value="15">૧૫ સેકન્ડ (Shorts / Reels)</option>
+                    <option value="30" selected>૩૦ સેકન્ડ (સ્ટાન્ડર્ડ સ્ટોરી)</option>
+                    <option value="60">૬૦ સેકન્ડ (ફુલ સિનેમેટિક)</option>
                 </select>
             </div>
 
-            <!-- Image Upload Option - Auto Triggers Video Generation -->
             <div class="form-group">
-                <label><i class="fa-solid fa-image"></i> Upload Photo (Auto-Generates AI Video Instantly)</label>
+                <label><i class="fa-solid fa-image"></i> ફોટો અપલોડ કરો (જેવો ફોટો નાખશો કે તરત વીડિયો બનશે)</label>
                 <label class="file-upload-box" for="imageInput">
                     <i class="fa-solid fa-cloud-arrow-up" style="color: #ec4899; font-size: 1.4rem; margin-bottom: 4px;"></i>
-                    <span id="fileName" style="display:block; font-size:0.85rem; font-weight:600; color:#fff;">Tap here to upload photo & make video</span>
+                    <span id="fileName" style="display:block; font-size:0.85rem; font-weight:600; color:#fff;">ફોટો પસંદ કરવા અહીં ટેપ કરો</span>
                 </label>
-                <input type="file" id="imageInput" accept="image/*" onchange="autoGenerateOnUpload(event)">
+                <input type="file" id="imageInput" accept="image/*" onchange="autoGenerateVideo(event)">
             </div>
 
-            <!-- Voice & Sound Style Selection -->
             <div class="form-group">
-                <label for="voiceStyle"><i class="fa-solid fa-microphone-lines"></i> Select Real Voice & Sound Effect</label>
+                <label for="voiceStyle"><i class="fa-solid fa-microphone-lines"></i> અવાજ અને સાઉન્ડ ઇફેક્ટ પસંદ કરો</label>
                 <select id="voiceStyle">
-                    <option value="horror">👻 Spooky / Horror Mystery Voice & Wind FX</option>
-                    <option value="love">💖 Emotional Romantic Voice & Soft Music</option>
-                    <option value="college">🎓 Trendy Youth / College Voice & Beat</option>
-                    <option value="cinematic">🎬 Deep Cinematic Trailer Voice</option>
+                    <option value="horror">👻 હોરર મિસ્ટ્રી અવાજ અને વિન્ડ ઇફેક્ટ</option>
+                    <option value="love">💖 ઇમોશનલ રોમેન્ટિક અવાજ અને સોફ્ટ મ્યુઝિક</option>
+                    <option value="college">🎓 યુથ કોલેજ વોઈસ અને અપબીટ મ્યુઝિક</option>
+                    <option value="cinematic">🎬 ડીપ સિનેમેટિક ટ્રેલર વોઈસ</option>
                 </select>
             </div>
 
-            <!-- Loader -->
             <div class="loader" id="loader">
                 <div class="spinner"></div>
-                <p style="margin-top: 8px; font-size: 0.85rem; color: #ec4899; font-weight: 500;" id="loadingText">AI is converting photo into video...</p>
+                <p style="margin-top: 8px; font-size: 0.85rem; color: #ec4899; font-weight: 500;" id="loadingText">AI તમારા ફોટામાંથી વીડિયો બનાવી રહ્યું છે...</p>
             </div>
 
-            <!-- Result Section -->
             <div class="result-section" id="resultSection">
-                <label style="text-align: left; margin-bottom: 8px; display: block;"><i class="fa-solid fa-video"></i> Your Instant AI Video Result</label>
+                <label style="text-align: left; margin-bottom: 8px; display: block;"><i class="fa-solid fa-video"></i> તમારો AI વીડિયો તૈયાર છે</label>
                 <div class="video-preview" id="videoPreview">
-                    <!-- Dynamic Video / Animation Container -->
-                </div>
+                    </div>
                 
                 <div class="audio-status" id="audioStatus">
-                    <i class="fa-solid fa-volume-high"></i> <span id="voiceMsg">Voiceover & background sound synced!</span>
+                    <i class="fa-solid fa-volume-high"></i> <span id="voiceMsg">બેકગ્રાઉન્ડ વોઈસ સિંક થઈ ગયો છે!</span>
                     <audio id="bgAudio" preload="auto">
                         <source src="" type="audio/mp3">
                     </audio>
                 </div>
 
-                <!-- Download Button -->
-                <a id="downloadBtn" class="btn-download" download="Rinku_Instant_AI_Video.mp4">
-                    <i class="fa-solid fa-download"></i> Download AI Video
+                <a id="downloadBtn" class="btn-download" download="Rinku_AI_Video.mp4">
+                    <i class="fa-solid fa-download"></i> AI વીડિયો ડાઉનલોડ કરો
                 </a>
             </div>
         </div>
@@ -295,29 +291,29 @@
             const voiceSelect = document.getElementById('voiceStyle');
             
             if(type === 'horror') {
-                promptBox.value = "On-screen text: \"Part 6 में पता चलेगा... ये लोग कौन हैं? 👻\"\nCTA Voice: \"Part 6 देखना है तो Follow, Comment और Share जरूर करें।\"";
+                promptBox.value = "Part 6 માં રહસ્ય ખુલશે... કોણ છે આ સાયા પાછળ? 👻\nકોમેન્ટ અને ફોલો કરો આગળની સ્ટોરી માટે!";
                 voiceSelect.value = "horror";
             } else if(type === 'love') {
-                promptBox.value = "Beautiful romantic sunset moments, sweet memories, emotional storytelling cinematic visuals.";
+                promptBox.value = "સુંદર યાદો અને પ્રેમભર્યા ક્ષણોની સફર... રોમેન્ટિક સ્ટોરી 💖";
                 voiceSelect.value = "love";
             } else if(type === 'college') {
-                promptBox.value = "College student life, campus masti, friendly moments and exam tension journey.";
+                promptBox.value = "કોલેજ કેમ્પસની મસ્તી અને મિત્રો સાથેની સુંદર પળો 🎓";
                 voiceSelect.value = "college";
             }
         }
 
-        // This function triggers automatically the moment a photo is selected from phone
-        function autoGenerateOnUpload(event) {
+        function autoGenerateVideo(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const promptText = document.getElementById('prompt').value.trim();
             if (!promptText) {
-                alert('કૃપા કરીને ફોટો સિલેક્ટ કરતા પહેલા ઉપર પ્રોમ્પ્ટ અથવા સ્ટોરી લખી લો!');
+                alert('કૃપા કરીને ફોટો અપલોડ કરતા પહેલા ઉપર તમારો પ્રોમ્પ્ટ અથવા સ્ટોરી લખી લો!');
+                event.target.value = '';
                 return;
             }
 
-            document.getElementById('fileName').innerText = "Uploaded: " + file.name;
+            document.getElementById('fileName').innerText = "ફાઇલ સિલેક્ટ થઈ: " + file.name;
             
             const loader = document.getElementById('loader');
             const resultSection = document.getElementById('resultSection');
@@ -339,30 +335,30 @@
                 const imageUrl = e.target.result;
 
                 setTimeout(() => {
-                    // Set Audio effects based on choice
+                    // Set audio effects
                     if(voiceStyle === 'horror') {
-                        voiceMsg.innerText = `Spooky Horror voice (${durationSec}s) & creepy wind effect active!`;
+                        voiceMsg.innerText = `હોરર મિસ્ટ્રી અવાજ (${durationSec}s) અને વિન્ડ ઇફેક્ટ સક્રિય છે!`;
                         bgAudio.src = "https://actions.google.com/sounds/v1/ambiences/creepy_wind.ogg";
                     } else if(voiceStyle === 'love') {
-                        voiceMsg.innerText = `Romantic voice (${durationSec}s) & soft background music active!`;
+                        voiceMsg.innerText = `રોમેન્ટિક અવાજ (${durationSec}s) અને સોફ્ટ મ્યુઝિક સક્રિય છે!`;
                         bgAudio.src = "https://actions.google.com/sounds/v1/ambiences/daytime_forest_bonfire.ogg";
                     } else if(voiceStyle === 'college') {
-                        voiceMsg.innerText = `Trendy youth voiceover (${durationSec}s) active!`;
+                        voiceMsg.innerText = `કોલેજ યુથ વોઈસઓવર (${durationSec}s) સક્રિય છે!`;
                         bgAudio.src = "https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg";
                     } else {
-                        voiceMsg.innerText = `Deep cinematic trailer voice (${durationSec}s) active!`;
+                        voiceMsg.innerText = `સિનેમેટિક ટ્રેલર અવાજ (${durationSec}s) સક્રિય છે!`;
                         bgAudio.src = "https://actions.google.com/sounds/v1/science_fiction/scifi_laser_charge.ogg";
                     }
 
                     audioStatus.style.display = 'block';
-                    bgAudio.play().catch(err => console.log("Audio autoplay restricted"));
+                    bgAudio.play().catch(err => console.log("Audio play restriction handled"));
 
-                    // Render the generated AI video view instantly using the uploaded photo and prompt
+                    // Render video UI with image and text overlay
                     videoPreview.innerHTML = `
                         <div style="width:100%; height:100%; position:relative;">
-                            <img src="${imageUrl}" style="width:100%; height:100%; object-fit:cover; animation: zoomEffect 10s infinite alternate;">
+                            <img src="${imageUrl}">
                             <div class="script-overlay">
-                                <b>✨ AI Generated Script:</b><br>${promptText}
+                                <b>✨ AI જનરેટેડ સ્ટોરી:</b><br>${promptText}
                             </div>
                         </div>
                     `;
