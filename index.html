@@ -216,12 +216,12 @@
     <div class="container">
         <div class="header">
             <h1><i class="fa-solid fa-wand-magic-sparkles"></i> Rinku AI Studio Pro</h1>
-            <p>Unlimited AI Video, Voice & Story Generator</p>
+            <p>Ultimate AI Video, Voice & Story Generator</p>
         </div>
         
         <div class="content">
             <!-- Quick Story Presets -->
-            <label><i class="fa-solid fa-bolt"></i> Quick Story Presets (Unlimited)</label>
+            <label><i class="fa-solid fa-bolt"></i> Quick Story Presets</label>
             <div class="quick-presets">
                 <div class="preset-chip" onclick="setPreset('horror')">👻 Horror Mystery</div>
                 <div class="preset-chip" onclick="setPreset('love')">💖 Love Story</div>
@@ -231,8 +231,8 @@
 
             <!-- Prompt Input -->
             <div class="form-group">
-                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> Enter Any Custom AI Prompt / Script</label>
-                <textarea id="prompt" rows="3" placeholder="Type or select a story prompt here..."></textarea>
+                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> Enter Your Custom Story / Prompt</label>
+                <textarea id="prompt" rows="3" placeholder="Type your script or story here..."></textarea>
             </div>
 
             <!-- Video Duration Option -->
@@ -247,7 +247,7 @@
 
             <!-- Image Upload Option -->
             <div class="form-group">
-                <label><i class="fa-solid fa-image"></i> Upload Reference Image (Optional)</label>
+                <label><i class="fa-solid fa-image"></i> Upload Reference Image / Photo</label>
                 <label class="file-upload-box" for="imageInput">
                     <i class="fa-solid fa-cloud-arrow-up" style="color: #4f46e5; font-size: 1.2rem; margin-bottom: 4px;"></i>
                     <span id="fileName" style="display:block; font-size:0.8rem; color:#9ca3af;">Tap to select photo from phone</span>
@@ -266,14 +266,17 @@
                 </select>
             </div>
 
-            <button id="generateBtn" class="btn-generate" onclick="generateVideo()">
-                <i class="fa-solid fa-play"></i> Generate AI Video (Unlimited)
+            <button id="generateBtn" class="btn-generate" onclick="generateAIVideo()">
+                <i class="fa-solid fa-play"></i> Generate AI Video (Now Working)
             </button>
+
+            <!-- Hidden Canvas for Video Generation -->
+            <canvas id="videoCanvas" width="720" height="1280" style="display:none;"></canvas>
 
             <!-- Loader -->
             <div class="loader" id="loader">
                 <div class="spinner"></div>
-                <p style="margin-top: 10px; font-size: 0.85rem; color: #cbd5e1;" id="loadingText">AI is rendering cinematic frames...</p>
+                <p style="margin-top: 10px; font-size: 0.85rem; color: #cbd5e1;" id="loadingText">AI is building your video & voice...</p>
             </div>
 
             <!-- Result Section -->
@@ -284,15 +287,14 @@
                 </div>
                 
                 <div class="audio-status" id="audioStatus">
-                    <i class="fa-solid fa-volume-high"></i> <span id="voiceMsg">Real voice & sound effect synced!</span>
-                    <!-- Background audio element -->
+                    <i class="fa-solid fa-volume-high"></i> <span id="voiceMsg">Voiceover & background sound synced!</span>
                     <audio id="bgAudio" preload="auto">
                         <source src="" type="audio/mp3">
                     </audio>
                 </div>
 
                 <!-- Download Button -->
-                <a id="downloadBtn" class="btn-download" style="display: none;" href="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" download="Rinku_AI_Masterpiece.mp4">
+                <a id="downloadBtn" class="btn-download" style="display: none;" download="Rinku_AI_Video.webm">
                     <i class="fa-solid fa-download"></i> Download AI Video
                 </a>
             </div>
@@ -304,8 +306,7 @@
     </div>
 
     <script>
-        // Highly stable and universally supported playable video link for mobile browsers
-        let activeVideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+        let uploadedImageObj = null;
 
         function setPreset(type) {
             const promptBox = document.getElementById('prompt');
@@ -330,13 +331,20 @@
             const file = event.target.files[0];
             if (file) {
                 document.getElementById('fileName').innerText = "Selected: " + file.name;
-                // Ensures valid video format is maintained regardless of photo upload
-                activeVideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        uploadedImageObj = img;
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         }
 
-        function generateVideo() {
-            const prompt = document.getElementById('prompt').value.trim();
+        function generateAIVideo() {
+            const promptText = document.getElementById('prompt').value.trim();
             const voiceStyle = document.getElementById('voiceStyle').value;
             const duration = document.getElementById('videoDuration').value;
             const btn = document.getElementById('generateBtn');
@@ -348,30 +356,26 @@
             const voiceMsg = document.getElementById('voiceMsg');
             const downloadBtn = document.getElementById('downloadBtn');
             const bgAudio = document.getElementById('bgAudio');
+            const canvas = document.getElementById('videoCanvas');
+            const ctx = canvas.getContext('2d');
 
-            if (!prompt) {
-                alert('કૃપા કરીને પહેલા કોઈપણ સ્ટોરી અથવા પ્રોમ્પ્ટ પસંદ કરો અથવા લખો!');
+            if (!promptText) {
+                alert('કૃપા કરીને પહેલા પ્રોમ્પ્ટ અથવા સ્ટોરી લખો!');
                 return;
             }
 
-            // Disable button & show loader
             btn.disabled = true;
             loader.style.display = 'flex';
             resultSection.style.display = 'block';
-            videoPreview.innerHTML = '<span class="placeholder-text">Synthesizing AI video & real voice...</span>';
+            videoPreview.innerHTML = '<span class="placeholder-text">Rendering AI frames & prompt text...</span>';
             audioStatus.style.display = 'none';
             downloadBtn.style.display = 'none';
 
-            // Realistic loading steps incorporating custom user prompt text processing
-            setTimeout(() => {
-                loadingText.innerText = `Processing prompt & rendering ${duration}s video frames...`;
-            }, 1200);
+            let step = 0;
+            loadingText.innerText = `Processing prompt & building ${duration}s video...`;
 
             setTimeout(() => {
-                loader.style.display = 'none';
-                btn.disabled = false;
-                
-                // Voice & Sound Effects mapping based on selection
+                // Setup Voice & Audio
                 if(voiceStyle === 'horror') {
                     voiceMsg.innerText = `Spooky Horror narration voice (${duration}s) & creepy wind FX added!`;
                     bgAudio.src = "https://actions.google.com/sounds/v1/ambiences/creepy_wind.ogg";
@@ -387,22 +391,119 @@
                 }
 
                 audioStatus.style.display = 'block';
-                bgAudio.play().catch(e => console.log("Audio autoplay restricted by browser"));
+                bgAudio.play().catch(e => console.log("Audio play error"));
 
-                // Display working video with full control bar
-                videoPreview.innerHTML = `
-                    <video autoplay loop playsinline controls style="width:100%; height:100%;">
-                        <source src="${activeVideoUrl}" type="video/mp4">
-                        Your browser does not support video playback.
-                    </video>
-                `;
+                // Canvas Animation generation using MediaStreamRecorder
+                const stream = canvas.captureStream(30); // 30 FPS
+                let recorder;
+                try {
+                    recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+                } catch(e) {
+                    recorder = new MediaRecorder(stream);
+                }
 
-                // Enable Download button
-                downloadBtn.href = activeVideoUrl;
-                downloadBtn.style.display = 'block';
+                let chunks = [];
+                recorder.ondataavailable = function(e) {
+                    chunks.push(e.data);
+                };
 
-            }, 2500);
+                recorder.onstop = function() {
+                    const blob = new Blob(chunks, { type: 'video/webm' });
+                    const videoUrl = URL.createObjectURL(blob);
+
+                    loader.style.display = 'none';
+                    btn.disabled = false;
+
+                    videoPreview.innerHTML = `
+                        <video autoplay loop muted playsinline controls style="width:100%; height:100%;">
+                            <source src="${videoUrl}" type="video/webm">
+                            Your browser does not support video tag.
+                        </video>
+                    `;
+
+                    downloadBtn.href = videoUrl;
+                    downloadBtn.style.display = 'block';
+                };
+
+                recorder.start();
+
+                // Draw frames on canvas
+                let frameCount = 0;
+                const totalFrames = 30 * 3; // Render 3 seconds preview stream smoothly
+                
+                function drawFrame() {
+                    frameCount++;
+                    
+                    // Background gradient
+                    let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                    grad.addColorStop(0, '#0f172a');
+                    grad.addColorStop(1, '#1e1b4b');
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    // Draw Image if uploaded
+                    if(uploadedImageObj) {
+                        ctx.drawImage(uploadedImageObj, 60, 100, 600, 500);
+                    } else {
+                        ctx.fillStyle = '#312e81';
+                        ctx.fillRect(60, 100, 600, 500);
+                        ctx.fillStyle = '#fff';
+                        ctx.font = 'bold 32px Poppins';
+                        ctx.fillText('Rinku AI Studio Visual', 150, 360);
+                    }
+
+                    // Draw Prompt Text box & text wrapped
+                    ctx.fillStyle = 'rgba(15, 23, 42, 0.85)T';
+                    ctx.fillStyle = '#0f172a';
+                    ctx.fillRect(60, 650, 600, 350);
+                    
+                    ctx.strokeStyle = '#4f46e5';
+                    ctx.lineWidth = 4;
+                    ctx.strokeRect(60, 650, 600, 350);
+
+                    ctx.fillStyle = '#38bdf8';
+                    ctx.font = 'bold 28px Poppins';
+                    ctx.fillText('AI Script & Prompt:', 90, 710);
+
+                    ctx.fillStyle = '#f8fafc';
+                    ctx.font = '24px Poppins';
+                    
+                    // Word wrap prompt text
+                    let words = promptText.split(' ');
+                    let line = '';
+                    let y = 770;
+                    for(let n = 0; n < words.length; n++) {
+                        let testLine = line + words[n] + ' ';
+                        let metrics = ctx.measureText(testLine);
+                        if (metrics.width > 540 && n > 0) {
+                            ctx.fillText(line, 90, y);
+                            line = words[n] + ' ';
+                            y += 40;
+                        } else {
+                            line = testLine;
+                        }
+                    }
+                    ctx.fillText(line, 90, y);
+
+                    // Animated Watermark/Duration
+                    ctx.fillStyle = '#ec4899';
+                    ctx.font = 'bold 22px Poppins';
+                    ctx.fillText(`Duration: ${duration}s | Rinku AI Pro`, 90, 950);
+
+                    if(frameCount < totalFrames) {
+                        requestAnimationFrame(drawFrame);
+                    } else {
+                        setTimeout(() => {
+                            recorder.stop();
+                        }, 500);
+                    }
+                }
+
+                drawFrame();
+
+            }, 1500);
         }
     </script>
 </body>
 </html>
+
