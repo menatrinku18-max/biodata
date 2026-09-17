@@ -267,10 +267,10 @@
             </div>
 
             <button id="generateBtn" class="btn-generate" onclick="generateAIVideo()">
-                <i class="fa-solid fa-play"></i> Generate AI Video (Now Working)
+                <i class="fa-solid fa-play"></i> Generate AI Video (Full Duration)
             </button>
 
-            <!-- Hidden Canvas for Video Generation -->
+            <!-- Hidden Canvas for Full Video Generation -->
             <canvas id="videoCanvas" width="720" height="1280" style="display:none;"></canvas>
 
             <!-- Loader -->
@@ -346,7 +346,7 @@
         function generateAIVideo() {
             const promptText = document.getElementById('prompt').value.trim();
             const voiceStyle = document.getElementById('voiceStyle').value;
-            const duration = document.getElementById('videoDuration').value;
+            const durationSec = parseInt(document.getElementById('videoDuration').value);
             const btn = document.getElementById('generateBtn');
             const loader = document.getElementById('loader');
             const loadingText = document.getElementById('loadingText');
@@ -367,33 +367,31 @@
             btn.disabled = true;
             loader.style.display = 'flex';
             resultSection.style.display = 'block';
-            videoPreview.innerHTML = '<span class="placeholder-text">Rendering AI frames & prompt text...</span>';
+            videoPreview.innerHTML = '<span class="placeholder-text">Rendering full duration AI frames...</span>';
             audioStatus.style.display = 'none';
             downloadBtn.style.display = 'none';
 
-            let step = 0;
-            loadingText.innerText = `Processing prompt & building ${duration}s video...`;
+            loadingText.innerText = `Building full ${durationSec} seconds video according to your prompt...`;
 
             setTimeout(() => {
-                // Setup Voice & Audio
+                // Audio Setup
                 if(voiceStyle === 'horror') {
-                    voiceMsg.innerText = `Spooky Horror narration voice (${duration}s) & creepy wind FX added!`;
+                    voiceMsg.innerText = `Spooky Horror narration voice (${durationSec}s) & creepy wind FX added!`;
                     bgAudio.src = "https://actions.google.com/sounds/v1/ambiences/creepy_wind.ogg";
                 } else if(voiceStyle === 'love') {
-                    voiceMsg.innerText = `Emotional romantic voice (${duration}s) & soft background music synced!`;
+                    voiceMsg.innerText = `Emotional romantic voice (${durationSec}s) & soft background music synced!`;
                     bgAudio.src = "https://actions.google.com/sounds/v1/ambiences/daytime_forest_bonfire.ogg";
                 } else if(voiceStyle === 'college') {
-                    voiceMsg.innerText = `Trendy youth voiceover (${duration}s) & upbeat rhythm added!`;
+                    voiceMsg.innerText = `Trendy youth voiceover (${durationSec}s) & upbeat rhythm added!`;
                     bgAudio.src = "https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg";
                 } else {
-                    voiceMsg.innerText = `Deep cinematic trailer voice (${duration}s) & sound design synced!`;
+                    voiceMsg.innerText = `Deep cinematic trailer voice (${durationSec}s) & sound design synced!`;
                     bgAudio.src = "https://actions.google.com/sounds/v1/science_fiction/scifi_laser_charge.ogg";
                 }
 
                 audioStatus.style.display = 'block';
                 bgAudio.play().catch(e => console.log("Audio play error"));
 
-                // Canvas Animation generation using MediaStreamRecorder
                 const stream = canvas.captureStream(30); // 30 FPS
                 let recorder;
                 try {
@@ -427,21 +425,21 @@
 
                 recorder.start();
 
-                // Draw frames on canvas
                 let frameCount = 0;
-                const totalFrames = 30 * 3; // Render 3 seconds preview stream smoothly
+                const fps = 30;
+                const totalFrames = fps * durationSec; // Exact frames for 15, 30 or 60 seconds!
                 
                 function drawFrame() {
                     frameCount++;
                     
-                    // Background gradient
+                    // Background
                     let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
                     grad.addColorStop(0, '#0f172a');
                     grad.addColorStop(1, '#1e1b4b');
                     ctx.fillStyle = grad;
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                    // Draw Image if uploaded
+                    // Image or default graphics
                     if(uploadedImageObj) {
                         ctx.drawImage(uploadedImageObj, 60, 100, 600, 500);
                     } else {
@@ -452,23 +450,22 @@
                         ctx.fillText('Rinku AI Studio Visual', 150, 360);
                     }
 
-                    // Draw Prompt Text box & text wrapped
-                    ctx.fillStyle = 'rgba(15, 23, 42, 0.85)T';
+                    // Prompt Box Area
                     ctx.fillStyle = '#0f172a';
-                    ctx.fillRect(60, 650, 600, 350);
+                    ctx.fillRect(60, 650, 600, 420);
                     
                     ctx.strokeStyle = '#4f46e5';
                     ctx.lineWidth = 4;
-                    ctx.strokeRect(60, 650, 600, 350);
+                    ctx.strokeRect(60, 650, 600, 420);
 
                     ctx.fillStyle = '#38bdf8';
                     ctx.font = 'bold 28px Poppins';
-                    ctx.fillText('AI Script & Prompt:', 90, 710);
+                    ctx.fillText('AI Script & Prompt Details:', 90, 710);
 
                     ctx.fillStyle = '#f8fafc';
-                    ctx.font = '24px Poppins';
+                    ctx.font = '22px Poppins';
                     
-                    // Word wrap prompt text
+                    // Multi-line word wrap for full prompt text
                     let words = promptText.split(' ');
                     let line = '';
                     let y = 770;
@@ -478,17 +475,19 @@
                         if (metrics.width > 540 && n > 0) {
                             ctx.fillText(line, 90, y);
                             line = words[n] + ' ';
-                            y += 40;
+                            y += 36;
+                            if(y > 1020) break; // Keep inside box limit
                         } else {
                             line = testLine;
                         }
                     }
                     ctx.fillText(line, 90, y);
 
-                    // Animated Watermark/Duration
+                    // Live Progress and Duration Timer on Video
+                    let currentSecPassed = (frameCount / fps).toFixed(1);
                     ctx.fillStyle = '#ec4899';
-                    ctx.font = 'bold 22px Poppins';
-                    ctx.fillText(`Duration: ${duration}s | Rinku AI Pro`, 90, 950);
+                    ctx.font = 'bold 20px Poppins';
+                    ctx.fillText(`Time: ${currentSecPassed}s / ${durationSec}s | Rinku AI Pro`, 90, 1045);
 
                     if(frameCount < totalFrames) {
                         requestAnimationFrame(drawFrame);
@@ -501,7 +500,7 @@
 
                 drawFrame();
 
-            }, 1500);
+            }, 1000);
         }
     </script>
 </body>
