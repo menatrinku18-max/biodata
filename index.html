@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rinku AI Video Generator</title>
+    <title>Rinku Ultimate AI Video Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -14,7 +14,7 @@
             font-family: 'Poppins', sans-serif;
         }
         body {
-            background-color: #0f172a;
+            background-color: #090d16;
             color: #f8fafc;
             min-height: 100vh;
             display: flex;
@@ -25,26 +25,26 @@
         .container {
             width: 100%;
             max-width: 480px;
-            background: #1e293b;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            background: #111827;
+            border-radius: 22px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
             overflow: hidden;
-            border: 1px solid #334155;
+            border: 1px solid #1f2937;
             margin-bottom: 20px;
         }
         .header {
-            background: linear-gradient(135deg, #6366f1, #ec4899);
+            background: linear-gradient(135deg, #4f46e5, #ec4899);
             padding: 24px 20px;
             text-align: center;
         }
         .header h1 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #fff;
             margin-bottom: 4px;
         }
         .header p {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #f1f5f9;
             opacity: 0.9;
         }
@@ -52,20 +52,20 @@
             padding: 20px;
         }
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
         label {
             display: block;
             font-size: 0.85rem;
             font-weight: 500;
             color: #cbd5e1;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         textarea, select {
             width: 100%;
             padding: 12px 14px;
-            background: #0f172a;
-            border: 1px solid #475569;
+            background: #030712;
+            border: 1px solid #374151;
             border-radius: 12px;
             color: #fff;
             font-size: 0.9rem;
@@ -74,14 +74,37 @@
             transition: border-color 0.3s;
         }
         textarea:focus, select:focus {
-            border-color: #6366f1;
+            border-color: #4f46e5;
+        }
+        .quick-presets {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            margin-bottom: 12px;
+        }
+        .preset-chip {
+            background: #1f2937;
+            border: 1px solid #374151;
+            color: #93c5fd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .preset-chip:hover {
+            background: #4f46e5;
+            color: #fff;
+            border-color: #4f46e5;
         }
         .file-upload-box {
-            border: 2px dashed #475569;
+            border: 2px dashed #374151;
             padding: 14px;
             border-radius: 12px;
             text-align: center;
-            background: #0f172a;
+            background: #030712;
             cursor: pointer;
             display: block;
         }
@@ -91,21 +114,21 @@
         .btn-generate {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #6366f1, #ec4899);
+            background: linear-gradient(135deg, #4f46e5, #ec4899);
             border: none;
             border-radius: 12px;
             color: #fff;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
             transition: transform 0.2s;
         }
         .btn-generate:active {
             transform: scale(0.98);
         }
         .result-section {
-            margin-top: 24px;
+            margin-top: 22px;
             text-align: center;
             display: none;
         }
@@ -117,9 +140,9 @@
             margin: 20px 0;
         }
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #334155;
+            width: 42px;
+            height: 42px;
+            border: 4px solid #1f2937;
             border-top: 4px solid #ec4899;
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -130,10 +153,10 @@
         }
         .video-preview {
             width: 100%;
-            height: 250px;
-            background: #0f172a;
+            height: 260px;
+            background: #030712;
             border-radius: 12px;
-            border: 1px solid #475569;
+            border: 1px solid #374151;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -151,33 +174,38 @@
             font-size: 0.8rem;
             color: #38bdf8;
             background: rgba(56, 189, 248, 0.1);
-            padding: 8px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 10px;
             display: none;
             text-align: left;
+            border: 1px solid rgba(56, 189, 248, 0.2);
         }
         .btn-download {
             display: block;
             width: 100%;
             margin-top: 12px;
-            padding: 12px;
+            padding: 14px;
             background: #10b981;
             color: #fff;
             text-align: center;
-            border-radius: 10px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: 600;
             font-size: 0.95rem;
-            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transition: background 0.2s;
+        }
+        .btn-download:hover {
+            background: #059669;
         }
         .placeholder-text {
-            color: #64748b;
+            color: #6b7280;
             font-size: 0.85rem;
             padding: 10px;
         }
         .footer-credits {
             font-size: 0.75rem;
-            color: #64748b;
+            color: #6b7280;
             text-align: center;
             margin-top: 10px;
         }
@@ -187,46 +215,55 @@
 
     <div class="container">
         <div class="header">
-            <h1><i class="fa-solid fa-clapperboard"></i> Rinku AI Video Generator</h1>
-            <p>Create AI Videos & Voiceovers Instantly</p>
+            <h1><i class="fa-solid fa-wand-magic-sparkles"></i> Rinku AI Studio Pro</h1>
+            <p>Unlimited AI Video, Voice & Story Generator</p>
         </div>
         
         <div class="content">
+            <!-- Quick Story Presets -->
+            <label><i class="fa-solid fa-bolt"></i> Quick Story Presets (Unlimited)</label>
+            <div class="quick-presets">
+                <div class="preset-chip" onclick="setPreset('horror')">👻 Horror Mystery</div>
+                <div class="preset-chip" onclick="setPreset('love')">💖 Love Story</div>
+                <div class="preset-chip" onclick="setPreset('college')">🎓 College Life</div>
+                <div class="preset-chip" onclick="setPreset('cafe')">☕ Cafe Routine Vlog</div>
+            </div>
+
             <!-- Prompt Input -->
             <div class="form-group">
-                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> Enter Video Prompt & Story</label>
-                <textarea id="prompt" rows="3" placeholder="e.g., Horror mystery story part 6..."></textarea>
+                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> Enter Any Custom AI Prompt / Script</label>
+                <textarea id="prompt" rows="3" placeholder="Type or select a story prompt here..."></textarea>
             </div>
 
             <!-- Image Upload Option -->
             <div class="form-group">
                 <label><i class="fa-solid fa-image"></i> Upload Reference Image (Optional)</label>
                 <label class="file-upload-box" for="imageInput">
-                    <i class="fa-solid fa-cloud-arrow-up" style="color: #6366f1; font-size: 1.2rem; margin-bottom: 4px;"></i>
-                    <span id="fileName" style="display:block; font-size:0.8rem; color:#94a3b8;">Tap to select photo from phone</span>
+                    <i class="fa-solid fa-cloud-arrow-up" style="color: #4f46e5; font-size: 1.2rem; margin-bottom: 4px;"></i>
+                    <span id="fileName" style="display:block; font-size:0.8rem; color:#9ca3af;">Tap to select photo from phone</span>
                 </label>
                 <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)">
             </div>
 
-            <!-- Voice Style Selection -->
+            <!-- Voice & Sound Style Selection -->
             <div class="form-group">
-                <label for="voiceStyle"><i class="fa-solid fa-microphone-lines"></i> Select AI Voice & Sound Effect</label>
+                <label for="voiceStyle"><i class="fa-solid fa-microphone-lines"></i> Select Real Voice & Sound Effect</label>
                 <select id="voiceStyle">
-                    <option value="horror">👻 Spooky / Horror Mystery Voice</option>
+                    <option value="horror">👻 Spooky / Horror Mystery Voice & Wind FX</option>
+                    <option value="love">💖 Emotional Romantic Voice & Soft Music</option>
+                    <option value="college">🎓 Trendy Youth / College Voice & Beat</option>
                     <option value="cinematic">🎬 Deep Cinematic Trailer Voice</option>
-                    <option value="energetic">🔥 Fast Energetic Reel Voice</option>
-                    <option value="calm">🌿 Soft & Calm Narration</option>
                 </select>
             </div>
 
             <button id="generateBtn" class="btn-generate" onclick="generateVideo()">
-                <i class="fa-solid fa-play"></i> Generate AI Video
+                <i class="fa-solid fa-play"></i> Generate AI Video (Unlimited)
             </button>
 
             <!-- Loader -->
             <div class="loader" id="loader">
                 <div class="spinner"></div>
-                <p style="margin-top: 10px; font-size: 0.85rem; color: #cbd5e1;" id="loadingText">AI is generating video frames...</p>
+                <p style="margin-top: 10px; font-size: 0.85rem; color: #cbd5e1;" id="loadingText">AI is rendering cinematic frames...</p>
             </div>
 
             <!-- Result Section -->
@@ -237,7 +274,7 @@
                 </div>
                 
                 <div class="audio-status" id="audioStatus">
-                    <i class="fa-solid fa-volume-high"></i> <span id="voiceMsg">Voice & Background sound synced!</span>
+                    <i class="fa-solid fa-volume-high"></i> <span id="voiceMsg">Real voice & sound effect synced!</span>
                     <!-- Background audio element -->
                     <audio id="bgAudio" preload="auto">
                         <source src="" type="audio/mp3">
@@ -245,7 +282,7 @@
                 </div>
 
                 <!-- Download Button -->
-                <a id="downloadBtn" class="btn-download" style="display: none;" href="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-code-31910-large.mp4" download="Rinku_AI_Video.mp4">
+                <a id="downloadBtn" class="btn-download" style="display: none;" href="#" download="Rinku_AI_Masterpiece.mp4">
                     <i class="fa-solid fa-download"></i> Download AI Video
                 </a>
             </div>
@@ -253,14 +290,36 @@
     </div>
 
     <div class="footer-credits">
-        Designed by Rinku | Powered by Web AI Studio
+        Designed by Rinku | Powered by Web AI Studio Pro
     </div>
 
     <script>
+        let customVideoSource = "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-code-31910-large.mp4";
+
+        function setPreset(type) {
+            const promptBox = document.getElementById('prompt');
+            const voiceSelect = document.getElementById('voiceStyle');
+            
+            if(type === 'horror') {
+                promptBox.value = "Dark spooky night in an old abandoned corridor, mysterious shadow moving, cinematic horror masterwork.";
+                voiceSelect.value = "horror";
+            } else if(type === 'love') {
+                promptBox.value = "Beautiful romantic sunset moments, sweet memories, emotional storytelling cinematic visuals.";
+                voiceSelect.value = "love";
+            } else if(type === 'college') {
+                promptBox.value = "College student life, campus masti, friendly moments and exam tension journey.";
+                voiceSelect.value = "college";
+            } else if(type === 'cafe') {
+                promptBox.value = "Rinku's cafe daily routine work, coffee brewing and serving happy customers.";
+                voiceSelect.value = "cinematic";
+            }
+        }
+
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (file) {
                 document.getElementById('fileName').innerText = "Selected: " + file.name;
+                customVideoSource = URL.createObjectURL(file);
             }
         }
 
@@ -278,7 +337,7 @@
             const bgAudio = document.getElementById('bgAudio');
 
             if (!prompt) {
-                alert('કૃપા કરીને પહેલા પ્રોમ્પ્ટ અથવા સ્ટોરી લખો!');
+                alert('કૃપા કરીને પહેલા કોઈપણ સ્ટોરી અથવા પ્રોમ્પ્ટ પસંદ કરો અથવા લખો!');
                 return;
             }
 
@@ -286,53 +345,50 @@
             btn.disabled = true;
             loader.style.display = 'flex';
             resultSection.style.display = 'block';
-            videoPreview.innerHTML = '<span class="placeholder-text">Rendering AI video & sound...</span>';
+            videoPreview.innerHTML = '<span class="placeholder-text">Synthesizing AI video & real voice...</span>';
             audioStatus.style.display = 'none';
             downloadBtn.style.display = 'none';
 
-            // Realistic loading steps
+            // Realistic loading animation steps
             setTimeout(() => {
-                loadingText.innerText = "Applying selected voice & background audio...";
-            }, 1500);
+                loadingText.innerText = "Applying AI voiceover & matching background sound effect...";
+            }, 1200);
 
             setTimeout(() => {
                 loader.style.display = 'none';
                 btn.disabled = false;
                 
-                // Voice / Sound message & audio selection
+                // Voice & Sound Effects mapping
                 if(voiceStyle === 'horror') {
-                    voiceMsg.innerText = "Spooky Horror voice and background chill audio added!";
+                    voiceMsg.innerText = "Spooky Horror narration voice & creepy wind sound effect added!";
                     bgAudio.src = "https://actions.google.com/sounds/v1/ambiences/creepy_wind.ogg";
-                } else if(voiceStyle === 'cinematic') {
-                    voiceMsg.innerText = "Deep cinematic trailer voice & music synced!";
-                    bgAudio.src = "https://actions.google.com/sounds/v1/science_fiction/scifi_laser_charge.ogg";
-                } else if(voiceStyle === 'energetic') {
-                    voiceMsg.innerText = "High-energy trendy reel audio added!";
+                } else if(voiceStyle === 'love') {
+                    voiceMsg.innerText = "Emotional romantic voice & soft background music synced!";
+                    bgAudio.src = "https://actions.google.com/sounds/v1/ambiences/daytime_forest_bonfire.ogg";
+                } else if(voiceStyle === 'college') {
+                    voiceMsg.innerText = "Trendy youth voiceover & upbeat rhythm added!";
                     bgAudio.src = "https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg";
                 } else {
-                    voiceMsg.innerText = "Soft calm narration audio synced!";
-                    bgAudio.src = "https://actions.google.com/weather/rain_heavy.ogg";
+                    voiceMsg.innerText = "Deep cinematic trailer voice & sound design synced!";
+                    bgAudio.src = "https://actions.google.com/sounds/v1/science_fiction/scifi_laser_charge.ogg";
                 }
 
                 audioStatus.style.display = 'block';
-                bgAudio.play().catch(e => console.log("Audio autoplay restricted"));
+                bgAudio.play().catch(e => console.log("Audio autoplay restricted by browser"));
 
-                // Working video URL that plays perfectly in all mobile browsers / TrebEdit
-                const finalVideoUrl = "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-code-31910-large.mp4";
-
-                // Display working video with play controls
+                // Display playable video
                 videoPreview.innerHTML = `
                     <video autoplay loop muted playsinline controls style="width:100%; height:100%;">
-                        <source src="${finalVideoUrl}" type="video/mp4">
+                        <source src="${customVideoSource}" type="video/mp4">
                         Your browser does not support video playback.
                     </video>
                 `;
 
-                // Enable Download button with valid link
-                downloadBtn.href = finalVideoUrl;
+                // Enable Download button
+                downloadBtn.href = customVideoSource;
                 downloadBtn.style.display = 'block';
 
-            }, 3000);
+            }, 2500);
         }
     </script>
 </body>
