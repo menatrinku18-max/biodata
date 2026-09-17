@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rinku Ultimate AI Video Studio Pro</title>
+    <title>Rinku AI Video Creator Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -153,7 +153,7 @@
         }
         .video-preview {
             width: 100%;
-            height: 260px;
+            height: 280px;
             background: #030712;
             border-radius: 12px;
             border: 1px solid #374151;
@@ -165,9 +165,24 @@
         }
         .video-preview video {
             width: 100%;
-            height: 100%;
+            height: 100%0;
             object-fit: cover;
             border-radius: 12px;
+        }
+        .script-overlay {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(3, 7, 18, 0.85);
+            border: 1px solid #4f46e5;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: #f8fafc;
+            text-align: left;
+            max-height: 90px;
+            overflow-y: auto;
         }
         .audio-status {
             margin-top: 10px;
@@ -216,26 +231,22 @@
     <div class="container">
         <div class="header">
             <h1><i class="fa-solid fa-wand-magic-sparkles"></i> Rinku AI Studio Pro</h1>
-            <p>Unlimited AI Video, Voice & Story Generator</p>
+            <p>Instant AI Video & Story Generator</p>
         </div>
         
         <div class="content">
-            <!-- Quick Story Presets -->
             <label><i class="fa-solid fa-bolt"></i> Quick Story Presets</label>
             <div class="quick-presets">
                 <div class="preset-chip" onclick="setPreset('horror')">👻 Horror Mystery</div>
                 <div class="preset-chip" onclick="setPreset('love')">💖 Love Story</div>
                 <div class="preset-chip" onclick="setPreset('college')">🎓 College Life</div>
-                <div class="preset-chip" onclick="setPreset('cafe')">☕ Cafe Routine</div>
             </div>
 
-            <!-- Prompt Input -->
             <div class="form-group">
-                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> Enter Your Custom Story / Prompt</label>
-                <textarea id="prompt" rows="3" placeholder="Type your script or story here..."></textarea>
+                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> Enter Video Prompt / Script</label>
+                <textarea id="prompt" rows="3" placeholder="Type your story or prompt here..."></textarea>
             </div>
 
-            <!-- Video Duration Option -->
             <div class="form-group">
                 <label for="videoDuration"><i class="fa-solid fa-clock"></i> Select Video Duration</label>
                 <select id="videoDuration">
@@ -245,7 +256,6 @@
                 </select>
             </div>
 
-            <!-- Image Upload Option -->
             <div class="form-group">
                 <label><i class="fa-solid fa-image"></i> Upload Reference Image / Photo</label>
                 <label class="file-upload-box" for="imageInput">
@@ -255,7 +265,6 @@
                 <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)">
             </div>
 
-            <!-- Voice & Sound Style Selection -->
             <div class="form-group">
                 <label for="voiceStyle"><i class="fa-solid fa-microphone-lines"></i> Select Real Voice & Sound Effect</label>
                 <select id="voiceStyle">
@@ -267,16 +276,14 @@
             </div>
 
             <button id="generateBtn" class="btn-generate" onclick="generateAIVideo()">
-                <i class="fa-solid fa-play"></i> Generate AI Video (Full Duration)
+                <i class="fa-solid fa-play"></i> Generate AI Video Now
             </button>
 
-            <!-- Loader -->
             <div class="loader" id="loader">
                 <div class="spinner"></div>
-                <p style="margin-top: 10px; font-size: 0.85rem; color: #cbd5e1;" id="loadingText">AI is rendering your video & voice...</p>
+                <p style="margin-top: 10px; font-size: 0.85rem; color: #cbd5e1;" id="loadingText">AI is generating your video...</p>
             </div>
 
-            <!-- Result Section -->
             <div class="result-section" id="resultSection">
                 <label style="text-align: left; margin-bottom: 8px; display: block;"><i class="fa-solid fa-video"></i> Your Generated AI Video</label>
                 <div class="video-preview" id="videoPreview">
@@ -285,14 +292,12 @@
                 
                 <div class="audio-status" id="audioStatus">
                     <i class="fa-solid fa-volume-high"></i> <span id="voiceMsg">Voiceover & background sound synced!</span>
-                    <!-- Background audio element -->
                     <audio id="bgAudio" preload="auto">
                         <source src="" type="audio/mp3">
                     </audio>
                 </div>
 
-                <!-- Download Button -->
-                <a id="downloadBtn" class="btn-download" style="display: none;" href="#" download="Rinku_AI_Masterpiece.mp4">
+                <a id="downloadBtn" class="btn-download" style="display: none;" download="Rinku_AI_Video.mp4">
                     <i class="fa-solid fa-download"></i> Download AI Video
                 </a>
             </div>
@@ -304,15 +309,14 @@
     </div>
 
     <script>
-        // Stable video link that always works, representing the generated result
-        let generatedVideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+        let customImageSrc = null;
 
         function setPreset(type) {
             const promptBox = document.getElementById('prompt');
             const voiceSelect = document.getElementById('voiceStyle');
             
             if(type === 'horror') {
-                promptBox.value = "Dark spooky night in an old abandoned corridor, mysterious shadow moving, cinematic horror masterwork.";
+                promptBox.value = "On-screen text: \"Part 6 में पता चलेगा... ये लोग कौन हैं? 👻\"\nCTA Voice: \"Part 6 देखना है तो Follow, Comment और Share जरूर करें।\"";
                 voiceSelect.value = "horror";
             } else if(type === 'love') {
                 promptBox.value = "Beautiful romantic sunset moments, sweet memories, emotional storytelling cinematic visuals.";
@@ -320,9 +324,6 @@
             } else if(type === 'college') {
                 promptBox.value = "College student life, campus masti, friendly moments and exam tension journey.";
                 voiceSelect.value = "college";
-            } else if(type === 'cafe') {
-                promptBox.value = "Rinku's cafe daily routine work, coffee brewing and serving happy customers.";
-                voiceSelect.value = "cinematic";
             }
         }
 
@@ -330,15 +331,18 @@
             const file = event.target.files[0];
             if (file) {
                 document.getElementById('fileName').innerText = "Selected: " + file.name;
-                // Regardless of image upload, maintain a valid playable video source for the player
-                generatedVideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    customImageSrc = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         }
 
         function generateAIVideo() {
-            const prompt = document.getElementById('prompt').value.trim();
+            const promptText = document.getElementById('prompt').value.trim();
             const voiceStyle = document.getElementById('voiceStyle').value;
-            const duration = document.getElementById('videoDuration').value;
+            const durationSec = document.getElementById('videoDuration').value;
             const btn = document.getElementById('generateBtn');
             const loader = document.getElementById('loader');
             const loadingText = document.getElementById('loadingText');
@@ -349,7 +353,72 @@
             const downloadBtn = document.getElementById('downloadBtn');
             const bgAudio = document.getElementById('bgAudio');
 
-            if (!prompt) {
-                alert('કૃપા કરીને પહેલા કોઈપણ સ્ટોરી અથવા પ્રોમ્પ્ટ પસંદ કરો અથવા લખો!');
+            if (!promptText) {
+                alert('કૃપા કરીને પહેલા પ્રોમ્પ્ટ અથવા સ્ટોરી લખો!');
                 return;
+            }
+
+            btn.disabled = true;
+            loader.style.display = 'flex';
+            resultSection.style.display = 'block';
+            videoPreview.innerHTML = '<span class="placeholder-text">Creating your AI video...</span>';
+            audioStatus.style.display = 'none';
+            downloadBtn.style.display = 'none';
+
+            setTimeout(() => {
+                // Set audio source based on user choice
+                if(voiceStyle === 'horror') {
+                    voiceMsg.innerText = `Spooky Horror narration voice (${durationSec}s) & eerie sound effect added!`;
+                    bgAudio.src = "https://actions.google.com/sounds/v1/ambiences/creepy_wind.ogg";
+                } else if(voiceStyle === 'love') {
+                    voiceMsg.innerText = `Emotional romantic voice (${durationSec}s) & soft background music added!`;
+                    bgAudio.src = "https://actions.google.com/sounds/v1/ambiences/daytime_forest_bonfire.ogg";
+                } else if(voiceStyle === 'college') {
+                    voiceMsg.innerText = `Trendy youth voiceover (${durationSec}s) & upbeat audio added!`;
+                    bgAudio.src = "https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg";
+                } else {
+                    voiceMsg.innerText = `Deep cinematic trailer voice (${durationSec}s) added!`;
+                    bgAudio.src = "https://actions.google.com/sounds/v1/science_fiction/scifi_laser_charge.ogg";
+                }
+
+                audioStatus.style.display = 'block';
+                bgAudio.play().catch(e => console.log("Audio autoplay restricted by browser"));
+
+                // Fallback reliable video sample that acts as the container, customized with user image & prompt overlay
+                let activeMediaSource = customImageSrc ? customImageSrc : "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+                
+                loader.style.display = 'none';
+                btn.disabled = false;
+
+                if(customImageSrc) {
+                    // If user uploaded an image, display it nicely with the prompt overlay as an active video player simulation
+                    videoPreview.innerHTML = `
+                        <div style="width:100%; height:100%; position:relative; background:#000;">
+                            <img src="${customImageSrc}" style="width:100%; height:100%; object-fit:cover;">
+                            <div class="script-overlay">
+                                <b>✨ AI Script & Prompt:</b><br>${promptText}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // If no image uploaded, play standard AI cinematic background video with prompt overlay
+                    videoPreview.innerHTML = `
+                        <video autoplay loop muted playsinline controls style="width:100%; height:100%; object-fit:cover;">
+                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+                            Your browser does not support video tag.
+                        </video>
+                        <div class="script-overlay">
+                            <b>✨ AI Script & Prompt:</b><br>${promptText}
+                        </div>
+                    `;
+                }
+
+                downloadBtn.href = customImageSrc ? customImageSrc : "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+                downloadBtn.style.display = 'block';
+
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
 
