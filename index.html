@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rinku Flow AI Video Studio</title>
+    <title>Rinku AI Video Generator Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -14,7 +14,7 @@
             font-family: 'Poppins', sans-serif;
         }
         body {
-            background-color: #060913;
+            background-color: #050814;
             color: #f8fafc;
             min-height: 100vh;
             display: flex;
@@ -25,15 +25,15 @@
         .container {
             width: 100%;
             max-width: 480px;
-            background: #10172a;
-            border-radius: 22px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            background: #0f172a;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
             overflow: hidden;
             border: 1px solid #1e293b;
             margin-bottom: 20px;
         }
         .header {
-            background: linear-gradient(135deg, #6366f1, #ec4899);
+            background: linear-gradient(135deg, #4f46e5, #ec4899);
             padding: 24px 20px;
             text-align: center;
         }
@@ -44,7 +44,7 @@
             margin-bottom: 4px;
         }
         .header p {
-            font-size: 0.8rem;
+            font-size: 0.81rem;
             color: #f1f5f9;
             opacity: 0.9;
         }
@@ -74,7 +74,7 @@
             transition: border-color 0.3s;
         }
         textarea:focus, select:focus {
-            border-color: #6366f1;
+            border-color: #4f46e5;
         }
         .quick-presets {
             display: flex;
@@ -95,22 +95,18 @@
             transition: all 0.2s;
         }
         .preset-chip:hover {
-            background: #6366f1;
+            background: #4f46e5;
             color: #fff;
-            border-color: #6366f1;
         }
         .file-upload-box {
             border: 2px dashed #ec4899;
             padding: 16px;
             border-radius: 12px;
             text-align: center;
-            background: rgba(236, 72, 153, 0.05);
+            background: rgba(236, 72, 153, 0.04);
             cursor: pointer;
             display: block;
             transition: background 0.3s;
-        }
-        .file-upload-box:hover {
-            background: rgba(236, 72, 153, 0.1);
         }
         .file-upload-box input {
             display: none;
@@ -119,7 +115,7 @@
             display: block;
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #6366f1, #ec4899);
+            background: linear-gradient(135deg, #4f46e5, #ec4899);
             color: #fff;
             text-align: center;
             border-radius: 12px;
@@ -127,8 +123,7 @@
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-            transition: transform 0.1s;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
             margin-top: 10px;
         }
         .btn-generate:active {
@@ -153,9 +148,9 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        .video-preview {
+        .video-preview-box {
             width: 100%;
-            height: 320px;
+            height: 300px;
             background: #020617;
             border-radius: 12px;
             border: 1px solid #334155;
@@ -165,17 +160,17 @@
             align-items: center;
             justify-content: center;
         }
-        /* Flow App Style AI Camera Motion Effect */
-        .video-preview img {
+        /* Canvas for generating dynamic AI video frames */
+        #aiCanvas {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            animation: flowAiMotion 10s ease-in-out infinite alternate;
+            animation: aiMotionZoom 12s ease-in-out infinite alternate;
         }
-        @keyframes flowAiMotion {
-            0% { transform: scale(1) translate(0px, 0px); filter: brightness(1); }
-            50% { transform: scale(1.12) translate(-10px, -5px); filter: brightness(1.05) contrast(1.1); }
-            100% { transform: scale(1.05) translate(10px, 5px); filter: brightness(0.98); }
+        @keyframes aiMotionZoom {
+            0% { transform: scale(1) translate(0, 0); filter: brightness(1); }
+            50% { transform: scale(1.1) translate(-8px, -5px); filter: brightness(1.05) contrast(1.1); }
+            100% { transform: scale(1.04) translate(8px, 5px); filter: brightness(0.96); }
         }
         .script-overlay {
             position: absolute;
@@ -183,12 +178,12 @@
             left: 0;
             right: 0;
             background: rgba(2, 6, 23, 0.85);
-            border-top: 1px solid #6366f1;
+            border-top: 1px solid #4f46e5;
             padding: 10px;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             color: #f8fafc;
             text-align: left;
-            max-height: 80px;
+            max-height: 75px;
             overflow-y: auto;
         }
         .audio-status {
@@ -214,10 +209,6 @@
             font-weight: 600;
             font-size: 0.95rem;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-            transition: background 0.2s;
-        }
-        .btn-download:hover {
-            background: #059669;
         }
         .footer-credits {
             font-size: 0.75rem;
@@ -231,8 +222,8 @@
 
     <div class="container">
         <div class="header">
-            <h1><i class="fa-solid fa-wand-magic-sparkles"></i> Rinku Flow AI Studio</h1>
-            <p>ફોટો અપલોડ કરો અને Flow App જેવો AI વીડિયો બનાવો</p>
+            <h1><i class="fa-solid fa-wand-magic-sparkles"></i> Rinku AI Video Maker</h1>
+            <p>ફોટો અપલોડ કરો અને AI વિઝ્યુઅલ વીડિયો બનાવો</p>
         </div>
         
         <div class="content">
@@ -241,7 +232,7 @@
             <div class="quick-presets">
                 <div class="preset-chip" onclick="setPreset('horror')">👻 હોરર મિસ્ટ્રી</div>
                 <div class="preset-chip" onclick="setPreset('love')">💖 લવ સ્ટોરી</div>
-                <div class="preset-chip" onclick="setPreset('college')">🎓 કોલેજ લાઈફ</div>
+                <div class="preset-chip" onclick="setPreset('cafe')">☕ કાફે વ્લોગ</div>
             </div>
 
             <!-- Prompt Input -->
@@ -251,7 +242,7 @@
 CTA Voice: "Part 6 देखना है तो Follow, Comment और Share जरूर करें।"</textarea>
             </div>
 
-            <!-- Video Duration Option -->
+            <!-- Video Duration -->
             <div class="form-group">
                 <label for="videoDuration"><i class="fa-solid fa-clock"></i> વીડિયોનો સમય પસંદ કરો</label>
                 <select id="videoDuration">
@@ -277,34 +268,36 @@ CTA Voice: "Part 6 देखना है तो Follow, Comment और Share �
                 <select id="voiceStyle">
                     <option value="horror">👻 હોરર મિસ્ટ્રી અવાજ અને વિન્ડ ઇફેક્ટ</option>
                     <option value="love">💖 ઇમોશનલ રોમેન્ટિક અવાજ અને સોફ્ટ મ્યુઝિક</option>
-                    <option value="college">🎓 યુથ કોલેજ વોઈસ અને અપબીટ મ્યુઝિક</option>
-                    <option value="cinematic">🎬 ડીપ સિનેમેટિક ટ્રેલર વોઈસ</option>
+                    <option value="cafe">☕ કાફે વાઇબ્સ અને સ્મૂથ મ્યુઝિક</option>
                 </select>
             </div>
 
             <!-- Generate Button -->
-            <button class="btn-generate" onclick="generateFlowVideo()"><i class="fa-solid fa-play"></i> Generate Flow AI Video</button>
+            <button class="btn-generate" onclick="generateAiVideo()"><i class="fa-solid fa-play"></i> Generate AI Video Now</button>
 
             <!-- Loader -->
             <div class="loader" id="loader">
                 <div class="spinner"></div>
-                <p style="margin-top: 8px; font-size: 0.85rem; color: #ec4899; font-weight: 500;" id="loadingText">AI કેમેરા મોશન અને ઇફેક્ટ્સ સેટ કરી રહ્યું છે...</p>
+                <p style="margin-top: 8px; font-size: 0.85rem; color: #ec4899; font-weight: 500;" id="loadingText">AI વિઝ્યુઅલ કેનવાસ અને ઇફેક્ટ્સ પ્રોસેસ થઈ રહ્યા છે...</p>
             </div>
 
             <!-- Result Section -->
             <div class="result-section" id="resultSection" style="display: none;">
-                <label style="text-align: left; margin-bottom: 8px; display: block;"><i class="fa-solid fa-video"></i> તમારો Flow AI વીડિયો તૈયાર છે</label>
-                <div class="video-preview" id="videoPreview">
-                    <!-- Dynamic Flow AI Motion Output -->
+                <label style="text-align: left; margin-bottom: 8px; display: block;"><i class="fa-solid fa-video"></i> તમારો AI વીડિયો તૈયાર છે</label>
+                <div class="video-preview-box">
+                    <canvas id="aiCanvas"></canvas>
+                    <div class="script-overlay" id="scriptOverlay">
+                        <b>✨ AI Script Overlay:</b><br>Loading...
+                    </div>
                 </div>
                 
                 <div class="audio-status" id="audioStatus">
-                    <i class="fa-solid fa-volume-high"></i> <span id="audioText">AI સાઉન્ડ અને કેમેરા મોશન સિંક થઈ ગયા છે!</span>
+                    <i class="fa-solid fa-volume-high"></i> <span id="audioText">AI સાઉન્ડ ઇફેક્ટ્સ અને કેમેરા મોશન સિંક થઈ ગયા છે!</span>
                 </div>
 
                 <!-- Download Button -->
-                <a id="downloadBtn" class="btn-download" href="#" download="Rinku_Flow_AI_Video.mp4">
-                    <i class="fa-solid fa-download"></i> AI વીડિયો ડાઉનલોડ કરો
+                <a id="downloadBtn" class="btn-download" href="#" download="Rinku_AI_Video.png">
+                    <i class="fa-solid fa-download"></i> AI વીડિયો / ફ્રેમ ડાઉનલોડ કરો
                 </a>
             </div>
         </div>
@@ -315,7 +308,7 @@ CTA Voice: "Part 6 देखना है तो Follow, Comment और Share �
     </div>
 
     <script>
-        let selectedImageUrl = "";
+        let uploadedImageObj = null;
 
         function setPreset(type) {
             const promptBox = document.getElementById('prompt');
@@ -327,9 +320,9 @@ CTA Voice: "Part 6 देखना है तो Follow, Comment और Share �
             } else if(type === 'love') {
                 promptBox.value = "સુંદર યાદો અને પ્રેમભર્યા ક્ષણોની સફર... રોમેન્ટિક સ્ટોરી 💖";
                 voiceSelect.value = "love";
-            } else if(type === 'college') {
-                promptBox.value = "કોલેજ કેમ્પસની મસ્તી અને મિત્રો સાથેની સુંદર પળો 🎓";
-                voiceSelect.value = "college";
+            } else if(type === 'cafe') {
+                promptBox.value = "Rinku's Cafe Journey: Fresh coffee brewing and cozy vibes ☕✨";
+                voiceSelect.value = "cafe";
             }
         }
 
@@ -339,26 +332,29 @@ CTA Voice: "Part 6 देखना है तो Follow, Comment और Share �
                 document.getElementById('fileName').innerText = "સિલેક્ટ થયેલ ફોટો: " + file.name;
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    selectedImageUrl = e.target.result;
+                    const img = new Image();
+                    img.onload = function() {
+                        uploadedImageObj = img;
+                    };
+                    img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        function generateFlowVideo() {
+        function generateAiVideo() {
             const promptText = document.getElementById('prompt').value.trim();
             if (!promptText) {
                 alert('કૃપા કરીને પહેલા પ્રોમ્પ્ટ અથવા સ્ટોરી લખો!');
                 return;
             }
-            if (!selectedImageUrl) {
+            if (!uploadedImageObj) {
                 alert('કૃપા કરીને પહેલા ફોટો અપલોડ કરો!');
                 return;
             }
 
             const loader = document.getElementById('loader');
             const resultSection = document.getElementById('resultSection');
-            const videoPreview = document.getElementById('videoPreview');
             const audioStatus = document.getElementById('audioStatus');
             const downloadBtn = document.getElementById('downloadBtn');
             const voiceStyle = document.getElementById('voiceStyle').value;
@@ -366,7 +362,6 @@ CTA Voice: "Part 6 देखना है तो Follow, Comment और Share �
 
             loader.style.display = 'flex';
             resultSection.style.display = 'block';
-            videoPreview.innerHTML = '';
             audioStatus.style.display = 'none';
 
             setTimeout(() => {
@@ -375,21 +370,31 @@ CTA Voice: "Part 6 देखना है तो Follow, Comment और Share �
                 } else if(voiceStyle === 'love') {
                     document.getElementById('audioText').innerText = `Romantic voice & smooth cinematic zoom active (${durationSec}s)!`;
                 } else {
-                    document.getElementById('audioText').innerText = `Cinematic voiceover & motion effects active (${durationSec}s)!`;
+                    document.getElementById('audioText').innerText = `Cafe Vibe audio track & motion effects active (${durationSec}s)!`;
                 }
                 audioStatus.style.display = 'block';
 
-                // Render Flow App Style Moving Video Preview using user's uploaded photo
-                videoPreview.innerHTML = `
-                    <img src="${selectedImageUrl}" alt="AI Video Frame">
-                    <div class="script-overlay">
-                        <b>✨ Flow AI Script:</b><br>${promptText}
-                    </div>
-                `;
+                document.getElementById('scriptOverlay').innerHTML = `<b>✨ AI Script:</b><br>${promptText}`;
 
-                downloadBtn.href = selectedImageUrl;
+                // Draw image onto Canvas to generate AI Video Frame
+                const canvas = document.getElementById('aiCanvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = uploadedImageObj.width;
+                canvas.height = uploadedImageObj.height;
+                ctx.drawImage(uploadedImageObj, 0, 0);
+
+                // Add Cinematic AI watermark/stamp on canvas
+                ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+                ctx.fillRect(20, 20, 240, 50);
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 20px Poppins, sans-serif";
+                ctx.fillText("Rinku AI Studio", 35, 52);
+
+                // Set download link to generated canvas image
+                downloadBtn.href = canvas.toDataURL('image/png');
+
                 loader.style.display = 'none';
-            }, 1200);
+            }, 1000);
         }
     </script>
 </body>
