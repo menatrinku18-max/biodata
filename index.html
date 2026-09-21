@@ -1,401 +1,62 @@
 <!DOCTYPE html>
 <html lang="gu">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rinku AI Video Generator Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-        }
-        body {
-            background-color: #050814;
-            color: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 16px;
-        }
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background: #0f172a;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-            overflow: hidden;
-            border: 1px solid #1e293b;
-            margin-bottom: 20px;
-        }
-        .header {
-            background: linear-gradient(135deg, #4f46e5, #ec4899);
-            padding: 24px 20px;
-            text-align: center;
-        }
-        .header h1 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 4px;
-        }
-        .header p {
-            font-size: 0.81rem;
-            color: #f1f5f9;
-            opacity: 0.9;
-        }
-        .content {
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 16px;
-        }
-        label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #cbd5e1;
-            margin-bottom: 6px;
-        }
-        textarea, select {
-            width: 100%;
-            padding: 12px 14px;
-            background: #020617;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 0.9rem;
-            outline: none;
-            resize: none;
-            transition: border-color 0.3s;
-        }
-        textarea:focus, select:focus {
-            border-color: #4f46e5;
-        }
-        .quick-presets {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-            margin-bottom: 12px;
-        }
-        .preset-chip {
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: #93c5fd;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-        }
-        .preset-chip:hover {
-            background: #4f46e5;
-            color: #fff;
-        }
-        .file-upload-box {
-            border: 2px dashed #ec4899;
-            padding: 16px;
-            border-radius: 12px;
-            text-align: center;
-            background: rgba(236, 72, 153, 0.04);
-            cursor: pointer;
-            display: block;
-            transition: background 0.3s;
-        }
-        .file-upload-box input {
-            display: none;
-        }
-        .btn-generate {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #4f46e5, #ec4899);
-            color: #fff;
-            text-align: center;
-            border-radius: 12px;
-            border: none;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
-            margin-top: 10px;
-        }
-        .btn-generate:active {
-            transform: scale(0.98);
-        }
-        .loader {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 15px 0;
-        }
-        .spinner {
-            width: 38px;
-            height: 38px;
-            border: 4px solid #1e293b;
-            border-top: 4px solid #ec4899;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .video-preview-box {
-            width: 100%;
-            height: 300px;
-            background: #020617;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        /* Canvas for generating dynamic AI video frames */
-        #aiCanvas {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            animation: aiMotionZoom 12s ease-in-out infinite alternate;
-        }
-        @keyframes aiMotionZoom {
-            0% { transform: scale(1) translate(0, 0); filter: brightness(1); }
-            50% { transform: scale(1.1) translate(-8px, -5px); filter: brightness(1.05) contrast(1.1); }
-            100% { transform: scale(1.04) translate(8px, 5px); filter: brightness(0.96); }
-        }
-        .script-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(2, 6, 23, 0.85);
-            border-top: 1px solid #4f46e5;
-            padding: 10px;
-            font-size: 0.76rem;
-            color: #f8fafc;
-            text-align: left;
-            max-height: 75px;
-            overflow-y: auto;
-        }
-        .audio-status {
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #38bdf8;
-            background: rgba(56, 189, 248, 0.1);
-            padding: 10px;
-            border-radius: 10px;
-            text-align: left;
-            border: 1px solid rgba(56, 189, 248, 0.2);
-        }
-        .btn-download {
-            display: block;
-            width: 100%;
-            margin-top: 12px;
-            padding: 14px;
-            background: #10b981;
-            color: #fff;
-            text-align: center;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-        }
-        .footer-credits {
-            font-size: 0.75rem;
-            color: #64748b;
-            text-align: center;
-            margin-top: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Video Creator - Script to Video</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { background: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+    .card { background: #1e293b; padding: 30px; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    h1 { font-size: 24px; margin-bottom: 8px; text-align: center; color: #38bdf8; }
+    p { font-size: 14px; text-align: center; color: #94a3b8; margin-bottom: 24px; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-size: 14px; margin-bottom: 6px; color: #cbd5e1; }
+    textarea, input[type="file"] { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 14px; }
+    textarea { resize: vertical; min-height: 100px; }
+    button { width: 100%; padding: 14px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    button:hover { background: #1d4ed8; }
+    .status { margin-top: 16px; padding: 12px; border-radius: 8px; display: none; text-align: center; font-size: 14px; }
+    .status.active { display: block; background: #334155; color: #38bdf8; }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <h1><i class="fa-solid fa-wand-magic-sparkles"></i> Rinku AI Video Maker</h1>
-            <p>ફોટો અપલોડ કરો અને AI વિઝ્યુઅલ વીડિયો બનાવો</p>
-        </div>
-        
-        <div class="content">
-            <!-- Quick Story Presets -->
-            <label><i class="fa-solid fa-bolt"></i> ક્વિક સ્ટોરી શોર્ટકટ્સ</label>
-            <div class="quick-presets">
-                <div class="preset-chip" onclick="setPreset('horror')">👻 હોરર મિસ્ટ્રી</div>
-                <div class="preset-chip" onclick="setPreset('love')">💖 લવ સ્ટોરી</div>
-                <div class="preset-chip" onclick="setPreset('cafe')">☕ કાફે વ્લોગ</div>
-            </div>
+<div class="card">
+  <h1>AI Video Maker</h1>
+  <p>તમારી સ્ક્રિપ્ટ અને ફોટો મૂકો અને વીડિયો બનાવો</p>
 
-            <!-- Prompt Input -->
-            <div class="form-group">
-                <label for="prompt"><i class="fa-solid fa-pen-nib"></i> વીડિયો પ્રોમ્પ્ટ અથવા સ્ટોરી લખો</label>
-                <textarea id="prompt" rows="3" placeholder="તમારી સ્ટોરી અહીં ટાઈપ કરો...">On-screen text: "Part 6 में पता चलेगा... ये लोग कौन हैं? 👻"
-CTA Voice: "Part 6 देखना है तो Follow, Comment और Share जरूर करें।"</textarea>
-            </div>
-
-            <!-- Video Duration -->
-            <div class="form-group">
-                <label for="videoDuration"><i class="fa-solid fa-clock"></i> વીડિયોનો સમય પસંદ કરો</label>
-                <select id="videoDuration">
-                    <option value="15">૧૫ સેકન્ડ (Shorts / Reels)</option>
-                    <option value="30" selected>૩૦ સેકન્ડ (સ્ટાન્ડર્ડ સ્ટોરી)</option>
-                    <option value="60">૬૦ સેકન્ડ (ફુલ સિનેમેટિક)</option>
-                </select>
-            </div>
-
-            <!-- Image Upload Option -->
-            <div class="form-group">
-                <label><i class="fa-solid fa-image"></i> ફોટો અપલોડ કરો</label>
-                <label class="file-upload-box" for="imageInput">
-                    <i class="fa-solid fa-cloud-arrow-up" style="color: #ec4899; font-size: 1.4rem; margin-bottom: 4px;"></i>
-                    <span id="fileName" style="display:block; font-size:0.85rem; font-weight:600; color:#fff;">ફોટો પસંદ કરવા અહીં ટેપ કરો</span>
-                </label>
-                <input type="file" id="imageInput" accept="image/*" onchange="handleFileSelect(event)">
-            </div>
-
-            <!-- Voice & Sound Style Selection -->
-            <div class="form-group">
-                <label for="voiceStyle"><i class="fa-solid fa-microphone-lines"></i> અવાજ અને સાઉન્ડ ઇફેક્ટ પસંદ કરો</label>
-                <select id="voiceStyle">
-                    <option value="horror">👻 હોરર મિસ્ટ્રી અવાજ અને વિન્ડ ઇફેક્ટ</option>
-                    <option value="love">💖 ઇમોશનલ રોમેન્ટિક અવાજ અને સોફ્ટ મ્યુઝિક</option>
-                    <option value="cafe">☕ કાફે વાઇબ્સ અને સ્મૂથ મ્યુઝિક</option>
-                </select>
-            </div>
-
-            <!-- Generate Button -->
-            <button class="btn-generate" onclick="generateAiVideo()"><i class="fa-solid fa-play"></i> Generate AI Video Now</button>
-
-            <!-- Loader -->
-            <div class="loader" id="loader">
-                <div class="spinner"></div>
-                <p style="margin-top: 8px; font-size: 0.85rem; color: #ec4899; font-weight: 500;" id="loadingText">AI વિઝ્યુઅલ કેનવાસ અને ઇફેક્ટ્સ પ્રોસેસ થઈ રહ્યા છે...</p>
-            </div>
-
-            <!-- Result Section -->
-            <div class="result-section" id="resultSection" style="display: none;">
-                <label style="text-align: left; margin-bottom: 8px; display: block;"><i class="fa-solid fa-video"></i> તમારો AI વીડિયો તૈયાર છે</label>
-                <div class="video-preview-box">
-                    <canvas id="aiCanvas"></canvas>
-                    <div class="script-overlay" id="scriptOverlay">
-                        <b>✨ AI Script Overlay:</b><br>Loading...
-                    </div>
-                </div>
-                
-                <div class="audio-status" id="audioStatus">
-                    <i class="fa-solid fa-volume-high"></i> <span id="audioText">AI સાઉન્ડ ઇફેક્ટ્સ અને કેમેરા મોશન સિંક થઈ ગયા છે!</span>
-                </div>
-
-                <!-- Download Button -->
-                <a id="downloadBtn" class="btn-download" href="#" download="Rinku_AI_Video.png">
-                    <i class="fa-solid fa-download"></i> AI વીડિયો / ફ્રેમ ડાઉનલોડ કરો
-                </a>
-            </div>
-        </div>
+  <form id="videoForm">
+    <div class="form-group">
+      <label for="script">તમારી સ્ક્રિપ્ટ લખો:</label>
+      <textarea id="script" placeholder="અહીં વીડિયો માટેનું લખાણ લખો..." required></textarea>
     </div>
 
-    <div class="footer-credits">
-        Designed by Rinku | Powered by Web AI Studio Pro
+    <div class="form-group">
+      <label for="image">ફોટો પસંદ કરો:</label>
+      <input type="file" id="image" accept="image/*" required>
     </div>
 
-    <script>
-        let uploadedImageObj = null;
+    <button type="submit" id="generateBtn">વીડિયો બનાવો</button>
+  </form>
 
-        function setPreset(type) {
-            const promptBox = document.getElementById('prompt');
-            const voiceSelect = document.getElementById('voiceStyle');
-            
-            if(type === 'horror') {
-                promptBox.value = "On-screen text: \"Part 6 में पता चलेगा... ये लोग कौन हैं? 👻\"\nCTA Voice: \"Part 6 देखना है तो Follow, Comment और Share जरूर करें।\"";
-                voiceSelect.value = "horror";
-            } else if(type === 'love') {
-                promptBox.value = "સુંદર યાદો અને પ્રેમભર્યા ક્ષણોની સફર... રોમેન્ટિક સ્ટોરી 💖";
-                voiceSelect.value = "love";
-            } else if(type === 'cafe') {
-                promptBox.value = "Rinku's Cafe Journey: Fresh coffee brewing and cozy vibes ☕✨";
-                voiceSelect.value = "cafe";
-            }
-        }
+  <div id="statusBox" class="status">પ્રોસેસિંગ શરૂ છે... (બેકએન્ડ API કનેક્ટ કરવું જરૂરી છે)</div>
+</div>
 
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                document.getElementById('fileName').innerText = "સિલેક્ટ થયેલ ફોટો: " + file.name;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        uploadedImageObj = img;
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
+<script>
+  const form = document.getElementById('videoForm');
+  const statusBox = document.getElementById('statusBox');
 
-        function generateAiVideo() {
-            const promptText = document.getElementById('prompt').value.trim();
-            if (!promptText) {
-                alert('કૃપા કરીને પહેલા પ્રોમ્પ્ટ અથવા સ્ટોરી લખો!');
-                return;
-            }
-            if (!uploadedImageObj) {
-                alert('કૃપા કરીને પહેલા ફોટો અપલોડ કરો!');
-                return;
-            }
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const scriptText = document.getElementById('script').value;
+    const imageFile = document.getElementById('image').files[0];
 
-            const loader = document.getElementById('loader');
-            const resultSection = document.getElementById('resultSection');
-            const audioStatus = document.getElementById('audioStatus');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const voiceStyle = document.getElementById('voiceStyle').value;
-            const durationSec = document.getElementById('videoDuration').value;
+    statusBox.classList.add('active');
+    statusBox.innerText = "સ્ક્રિપ્ટ અને ફોટો મળી ગયા છે! વીડિયો જનરેટ કરવા માટે AI API સાથે જોડવું પડશે.";
+  });
+</script>
 
-            loader.style.display = 'flex';
-            resultSection.style.display = 'block';
-            audioStatus.style.display = 'none';
-
-            setTimeout(() => {
-                if(voiceStyle === 'horror') {
-                    document.getElementById('audioText').innerText = `Spooky Horror narration (${durationSec}s) & camera motion active!`;
-                } else if(voiceStyle === 'love') {
-                    document.getElementById('audioText').innerText = `Romantic voice & smooth cinematic zoom active (${durationSec}s)!`;
-                } else {
-                    document.getElementById('audioText').innerText = `Cafe Vibe audio track & motion effects active (${durationSec}s)!`;
-                }
-                audioStatus.style.display = 'block';
-
-                document.getElementById('scriptOverlay').innerHTML = `<b>✨ AI Script:</b><br>${promptText}`;
-
-                // Draw image onto Canvas to generate AI Video Frame
-                const canvas = document.getElementById('aiCanvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = uploadedImageObj.width;
-                canvas.height = uploadedImageObj.height;
-                ctx.drawImage(uploadedImageObj, 0, 0);
-
-                // Add Cinematic AI watermark/stamp on canvas
-                ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
-                ctx.fillRect(20, 20, 240, 50);
-                ctx.fillStyle = "#ffffff";
-                ctx.font = "bold 20px Poppins, sans-serif";
-                ctx.fillText("Rinku AI Studio", 35, 52);
-
-                // Set download link to generated canvas image
-                downloadBtn.href = canvas.toDataURL('image/png');
-
-                loader.style.display = 'none';
-            }, 1000);
-        }
-    </script>
 </body>
 </html>
+
